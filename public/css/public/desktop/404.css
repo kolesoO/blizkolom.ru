@@ -1,0 +1,35 @@
+#page-404 {
+    text-align: center;
+    background-repeat: repeat;
+    padding-bottom: 6em;
+    padding-top: 2em;
+    min-height: 100vh;
+    color: #ccc;
+    background: #1f1f1f;
+}
+header, footer, .menu {
+    display: none;
+}
+body {
+    background: #1f1f1f;
+}
+#page-404 div {
+    font-size: 4em;
+    width: 100%;
+    float: left;
+    line-height: 1.4em;
+}
+#page-404 p {
+    max-width: calc(100% - 2em);
+    margin-left: 1em;
+    font-size: 1.1em;
+    margin-top: 1em;
+    color: #616161;
+    text-shadow: none;
+    line-height: 1.5em;
+}
+#page-404 a {
+    text-decoration: none;
+    white-space: nowrap;
+    color: #2948ff;
+}

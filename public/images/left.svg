@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 495 495" style="enable-background:new 0 0 495 495;" xml:space="preserve" width="512px" height="512px" class=""><g><g>
+	<path style="fill:#FFFFFF" d="M247.5,0v140.444l24.483-24.563l28.33,28.238L247.5,197.105v100.789l52.813,52.986l-28.33,28.238   L247.5,354.556V495C384.19,495,495,384.19,495,247.5S384.19,0,247.5,0z" data-original="#9BC9FF" class="active-path" data-old_color="#9BC9FF"/>
+	<path style="fill:#FFFFFF" d="M140.792,247.5L247.5,140.444V0C110.81,0,0,110.81,0,247.5S110.81,495,247.5,495V354.556   L140.792,247.5z" data-original="#BDDBFF" class="" data-old_color="#BDDBFF"/>
+	<polygon style="fill:#FFFFFF" points="247.5,297.895 247.5,197.105 197.269,247.5  " data-original="#BDDBFF" class="" data-old_color="#BDDBFF"/>
+	<polygon style="fill:#333333" points="247.5,354.556 271.983,379.119 300.313,350.881 247.5,297.895 197.269,247.5 247.5,197.105    300.313,144.119 271.983,115.881 247.5,140.444 140.792,247.5  " data-original="#2488FF" class="" data-old_color="#2488FF"/>
+</g></g> </svg>

@@ -1,0 +1,18 @@
+{
+  "name": "BlizkoLom - пункты приема металлолома",
+  "short_name": "BlizkoLom",
+  "lang": "ru-RU",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ededed",
+  "icons": [{
+    "src": "/resource/homescreen48.png",
+    "sizes": "72x72",
+    "type": "image/png"
+  }, {
+    "src": "/resource/homescreen512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "theme_color": "#1f1f1f"
+}

@@ -1,0 +1,8 @@
+{
+    "/js/public/desktop/app.js": "/js/public/desktop/app.js",
+    "/js/public/mobile/app.js": "/js/public/mobile/app.js",
+    "/css/public/mobile/app.css": "/css/public/mobile/app.css",
+    "/css/public/mobile/app-after.css": "/css/public/mobile/app-after.css",
+    "/css/public/desktop/app.css": "/css/public/desktop/app.css",
+    "/css/public/desktop/app-after.css": "/css/public/desktop/app-after.css"
+}
