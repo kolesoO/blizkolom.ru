@@ -30,7 +30,7 @@ if (!!document.getElementById("app")) {
     app = new Vue({
         el: "#app",
         data: {
-            host: "http://blizkolom.local",
+            host: location.origin,
             apiVersion: 1
         },
         methods: {
