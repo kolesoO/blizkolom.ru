@@ -340,8 +340,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       companiesLimit: 20,
       companiesOffset: 0,
       companiesList: {
-        'list': [],
-        'total': 0
+        list: [],
+        total: 0
       },
       tablePropCode: [],
       tableProps: []
@@ -387,8 +387,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         'property_id': ctx.selectedFiltersId,
         'limit': ctx.companiesLimit
       }, function (response) {
-        for (var key in response.body.list) {
-          response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
+        if (response.body.list.length > 0) {
+          for (var key in response.body.list) {
+            response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
+          }
         }
 
         ctx.companiesList = response.body;
@@ -405,9 +407,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         'offset': ctx.companiesOffset,
         'limit': ctx.companiesLimit
       }, function (response) {
-        for (var key in response.body.list) {
-          response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
-          ctx.companiesList.list.push(response.body.list[key]);
+        if (response.body.list.length > 0) {
+          for (var key in response.body.list) {
+            response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
+            ctx.companiesList.list.push(response.body.list[key]);
+          }
         }
 
         ctx.refreshSelectedFilters();
@@ -452,12 +456,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       });
       window.yandexMap.behaviors.disable("scrollZoom");
 
-      for (var key in this.companiesList.list) {
-        mapPlacemark = this.getPlacemarkData(this.companiesList.list[key]);
+      if (this.companiesList.list.length > 0) {
+        for (var key in this.companiesList.list) {
+          mapPlacemark = this.getPlacemarkData(this.companiesList.list[key]);
 
-        if (!!mapPlacemark) {
-          window.yandexMap.geoObjects.add(mapPlacemark);
-          mapPlacemarks.push(mapPlacemark);
+          if (!!mapPlacemark) {
+            window.yandexMap.geoObjects.add(mapPlacemark);
+            mapPlacemarks.push(mapPlacemark);
+          }
         }
       }
 
@@ -465,27 +471,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       window.yandexMap.geoObjects.add(window.clusterer);
       window.yandexMap.setBounds(window.yandexMap.geoObjects.getBounds(), {
         zoomMargin: 9
-      }); //scrolling
-
-      var truck = document.getElementById("yamap"),
-          truck_pos_t = truck.getBoundingClientRect()["top"],
-          truck_pos_b = truck.getBoundingClientRect()["bottom"],
-          cont_pos_b = document.getElementById("content").getBoundingClientRect()["bottom"] - 19.5;
-
-      window.onscroll = function () {
-        if (window.pageYOffset >= truck_pos_t) {
-          if (window.pageYOffset >= cont_pos_b - truck_pos_b + truck_pos_t) {
-            truck.classList.remove("fixed");
-          } else {
-            truck.classList.add("fixed");
-          }
-        } else {
-          if (window.pageYOffset < truck_pos_t) {
-            truck.classList.remove("fixed");
-          }
-        }
-      }; //end
-
+      });
     },
     getPrices: function getPrices(companyId, propertyCode) {
       var ctx = this;
@@ -26004,7 +25990,7 @@ if (!!document.getElementById("app")) {
           }).then(function (resp) {
             promiseAction(resp);
           })["catch"](function (error) {
-            alert(error);
+            console.log(error);
           });
         }
       }
@@ -26578,6 +26564,40 @@ if ("serviceWorker" in navigator) {
     });
   }
 } //end
+//scrolling
+
+
+var truck,
+    truck_pos_t,
+    truck_pos_b,
+    cont_pos_b,
+    interval = setInterval(function () {
+  truck = document.getElementById("yamap");
+
+  if (!!truck) {
+    truck_pos_t = 268.75; //hotfix
+
+    truck_pos_b = truck.getBoundingClientRect()["bottom"];
+    cont_pos_b = document.getElementById("content").getBoundingClientRect()["bottom"] - 19.5;
+
+    window.onscroll = function () {
+      if (window.pageYOffset >= truck_pos_t) {
+        if (window.pageYOffset >= cont_pos_b - truck_pos_b + truck_pos_t) {
+          truck.classList.remove("fixed");
+        } else {
+          truck.classList.add("fixed");
+        }
+      } else {
+        if (window.pageYOffset < truck_pos_t) {
+          truck.classList.remove("fixed");
+        }
+      }
+    };
+
+    window.scrollTo(0, 0);
+    clearInterval(interval);
+  }
+}, 1000); //end
 
 /***/ }),
 

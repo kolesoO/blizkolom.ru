@@ -120,399 +120,399 @@ select id, 48 from companies where name in
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 27 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '0;%')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '0;%')
 
 
 18) Привязка компаний к типу изделий Электродвигатели
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 28 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;1;%' OR TYPE_ID LIKE '%;1')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;1;%' OR PRODUCT_ID LIKE '%;1')
 
 
 19) Привязка компаний к типу изделий Катализаторы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 29 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;2;%' OR TYPE_ID LIKE '%;2')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;2;%' OR PRODUCT_ID LIKE '%;2')
 
 
 20) Привязка компаний к типу изделий Радиодетали
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 30 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;3;%' OR TYPE_ID LIKE '%;3')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;3;%' OR PRODUCT_ID LIKE '%;3')
 
 
 21) Кабели
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 31 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;6;%' OR TYPE_ID LIKE '%;6')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;6;%' OR PRODUCT_ID LIKE '%;6')
 
 
 22) Автомобили
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 32 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;7;%' OR TYPE_ID LIKE '%;7')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;7;%' OR PRODUCT_ID LIKE '%;7')
 
 
 23) Подшипники
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 33 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;8;%' OR TYPE_ID LIKE '%;8')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;8;%' OR PRODUCT_ID LIKE '%;8')
 
 
 24) Трансформаторы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 34 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;9;%' OR TYPE_ID LIKE '%;9')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;9;%' OR PRODUCT_ID LIKE '%;9')
 
 
 25) Железнодорожный
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 35 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;10;%' OR TYPE_ID LIKE '%;10')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;10;%' OR PRODUCT_ID LIKE '%;10')
 
 
 26) Жесть
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 36 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;11;%' OR TYPE_ID LIKE '%;11')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;11;%' OR PRODUCT_ID LIKE '%;11')
 
 
 27) АКБ 55Ah
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 49 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;12;%' OR TYPE_ID LIKE '%;12')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;12;%' OR PRODUCT_ID LIKE '%;12')
 
 
 28) АКБ 75Ah
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 50 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;13;%' OR TYPE_ID LIKE '%;13')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;13;%' OR PRODUCT_ID LIKE '%;13')
 
 
 29) АКБ 100Ah
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 51 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;14;%' OR TYPE_ID LIKE '%;14')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;14;%' OR PRODUCT_ID LIKE '%;14')
 
 
 30) АКБ 132Ah
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 52 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;15;%' OR TYPE_ID LIKE '%;15')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;15;%' OR PRODUCT_ID LIKE '%;15')
 
 
 31) АКБ 190Ah
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 53 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;16;%' OR TYPE_ID LIKE '%;16')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;16;%' OR PRODUCT_ID LIKE '%;16')
 
 
 32) Отечественные
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 54 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;18;%' OR TYPE_ID LIKE '%;18')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;18;%' OR PRODUCT_ID LIKE '%;18')
 
 
 33) Импортные
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 55 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;19;%' OR TYPE_ID LIKE '%;19')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;19;%' OR PRODUCT_ID LIKE '%;19')
 
 
 34) Металлические
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 56 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;20;%' OR TYPE_ID LIKE '%;20')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;20;%' OR PRODUCT_ID LIKE '%;20')
 
 
 35) Сажевые
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 57 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;21;%' OR TYPE_ID LIKE '%;21')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;21;%' OR PRODUCT_ID LIKE '%;21')
 
 
 36) Керамические
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 58 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;22;%' OR TYPE_ID LIKE '%;22')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;22;%' OR PRODUCT_ID LIKE '%;22')
 
 
 37) Компьютерные
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 59 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;4;%' OR TYPE_ID LIKE '%;4')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;4;%' OR PRODUCT_ID LIKE '%;4')
 
 
 38) Электронные
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 60 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;5;%' OR TYPE_ID LIKE '%;5')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;5;%' OR PRODUCT_ID LIKE '%;5')
 
 
 39) Микросхемы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 61 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;23;%' OR TYPE_ID LIKE '%;23')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;23;%' OR PRODUCT_ID LIKE '%;23')
 
 
 39) Транзисторы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 62 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;24;%' OR TYPE_ID LIKE '%;24')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;24;%' OR PRODUCT_ID LIKE '%;24')
 
 
 40) Резисторы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 63 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;25;%' OR TYPE_ID LIKE '%;25')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;25;%' OR PRODUCT_ID LIKE '%;25')
 
 
 41) Реле
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 64 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;26;%' OR TYPE_ID LIKE '%;26')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;26;%' OR PRODUCT_ID LIKE '%;26')
 
 
 41) Конденсаторы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 65 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;27;%' OR TYPE_ID LIKE '%;27')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;27;%' OR PRODUCT_ID LIKE '%;27')
 
 
 42) Медный очищ.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 66 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;40;%' OR TYPE_ID LIKE '%;40')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;40;%' OR PRODUCT_ID LIKE '%;40')
 
 
 43) Медный неочищ.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 67 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;41;%' OR TYPE_ID LIKE '%;41')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;41;%' OR PRODUCT_ID LIKE '%;41')
 
 
 44) Алюмин. очищ.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 68 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;42;%' OR TYPE_ID LIKE '%;42')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;42;%' OR PRODUCT_ID LIKE '%;42')
 
 
 45) Алюмин. очищ.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 69 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;43;%' OR TYPE_ID LIKE '%;43')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;43;%' OR PRODUCT_ID LIKE '%;43')
 
 
 46) Свинцовый очищ.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 70 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;44;%' OR TYPE_ID LIKE '%;44')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;44;%' OR PRODUCT_ID LIKE '%;44')
 
 
 47) Свинц. неочищ.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 71 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;45;%' OR TYPE_ID LIKE '%;45')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;45;%' OR PRODUCT_ID LIKE '%;45')
 
 
 48) Радиальные
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 72 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;46;%' OR TYPE_ID LIKE '%;46')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;46;%' OR PRODUCT_ID LIKE '%;46')
 
 
 49) Игольчатые
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 74 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;48;%' OR TYPE_ID LIKE '%;48')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;48;%' OR PRODUCT_ID LIKE '%;48')
 
 
 50) Упорные подшип.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 75 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;49;%' OR TYPE_ID LIKE '%;49')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;49;%' OR PRODUCT_ID LIKE '%;49')
 
 
 51) Алюминиевые тр.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 76 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;50;%' OR TYPE_ID LIKE '%;50')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;50;%' OR PRODUCT_ID LIKE '%;50')
 
 
 52) Медные трансф.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 77 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;51;%' OR TYPE_ID LIKE '%;51')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;51;%' OR PRODUCT_ID LIKE '%;51')
 
 
 53) Колесные пары
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 78 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;52;%' OR TYPE_ID LIKE '%;52')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;52;%' OR PRODUCT_ID LIKE '%;52')
 
 
 54) Рамы боковые
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 79 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;53;%' OR TYPE_ID LIKE '%;53')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;53;%' OR PRODUCT_ID LIKE '%;53')
 
 
 55) Балки подрессор.
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 80 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;54;%' OR TYPE_ID LIKE '%;54')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;54;%' OR PRODUCT_ID LIKE '%;54')
 
 
 56) Рельсы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 81 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;55;%' OR TYPE_ID LIKE '%;55')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;55;%' OR PRODUCT_ID LIKE '%;55')
 
 
 57) Черная жесть
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 82 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;56;%' OR TYPE_ID LIKE '%;56')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;56;%' OR PRODUCT_ID LIKE '%;56')
 
 
 58) Белая жесть
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 83 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;57;%' OR TYPE_ID LIKE '%;57')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;57;%' OR PRODUCT_ID LIKE '%;57')
 
 
 59) Пищевая жесть
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 84 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;58;%' OR TYPE_ID LIKE '%;58')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;58;%' OR PRODUCT_ID LIKE '%;58')
 
 
 60) Материн. платы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 85 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;28;%' OR TYPE_ID LIKE '%;28')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;28;%' OR PRODUCT_ID LIKE '%;28')
 
 
 61) Видеокарты
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 86 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;29;%' OR TYPE_ID LIKE '%;29')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;29;%' OR PRODUCT_ID LIKE '%;29')
 
 
 62) Блоки питания
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 87 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;30;%' OR TYPE_ID LIKE '%;30')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;30;%' OR PRODUCT_ID LIKE '%;30')
 
 
 61) Процессоры
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 88 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;31;%' OR TYPE_ID LIKE '%;31')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;31;%' OR PRODUCT_ID LIKE '%;31')
 
 
 62) Жесткие диски
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 89 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;32;%' OR TYPE_ID LIKE '%;32')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;32;%' OR PRODUCT_ID LIKE '%;32')
 
 
 63) Оператив. память
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 90 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;33;%' OR TYPE_ID LIKE '%;33')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;33;%' OR PRODUCT_ID LIKE '%;33')
 
 
 64) Блоки GSM
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 91 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;34;%' OR TYPE_ID LIKE '%;34')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;34;%' OR PRODUCT_ID LIKE '%;34')
 
 
 65) Материн. платы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 92 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;35;%' OR TYPE_ID LIKE '%;35')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;35;%' OR PRODUCT_ID LIKE '%;35')
 
 
 66) Видеокарты
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 93 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;36;%' OR TYPE_ID LIKE '%;36')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;36;%' OR PRODUCT_ID LIKE '%;36')
 
 
 67) Оператив. память
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 94 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;37;%' OR TYPE_ID LIKE '%;37')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;37;%' OR PRODUCT_ID LIKE '%;37')
 
 
 68) Микросхемы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 95 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;38;%' OR TYPE_ID LIKE '%;38')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;38;%' OR PRODUCT_ID LIKE '%;38')
 
 
 69) Транзисторы
 
 INSERT INTO company_properties (company_id, property_id)
 select id, 96 from companies where name in 
-(select name from blizko.COMPANIES where TYPE_ID LIKE '%;39;%' OR TYPE_ID LIKE '%;39')
+(select name from blizko.COMPANIES where PRODUCT_ID LIKE '%;39;%' OR PRODUCT_ID LIKE '%;39')
 
 
 70) Вывоз бесплатно
@@ -527,3 +527,17 @@ select id, 38 from companies where name in
 INSERT INTO company_properties (company_id, property_id)
 select id, 40 from companies where name in 
 (select name from blizko.COMPANIES where ADDITIONAL_SERVICES LIKE '%Демонтаж%')
+
+
+72) цветмет
+
+INSERT INTO company_properties (company_id, property_id)
+select id, 6 from companies where name in 
+(select name from blizko.COMPANIES where TYPE_ID LIKE '0;%' OR TYPE_ID LIKE '%;0;%' OR TYPE_ID LIKE '%;0')
+
+
+73) чермет
+
+INSERT INTO company_properties (company_id, property_id)
+select id, 5 from companies where name in 
+(select name from blizko.COMPANIES where TYPE_ID LIKE '1;%' OR TYPE_ID LIKE '%;1;%' OR TYPE_ID LIKE '%;1')

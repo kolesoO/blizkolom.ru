@@ -223,3 +223,36 @@ if ("serviceWorker" in navigator) {
     }
 }
 //end
+
+//scrolling
+let truck,
+    truck_pos_t,
+    truck_pos_b,
+    cont_pos_b,
+    interval = setInterval(
+        function() {
+            truck = document.getElementById("yamap");
+            if (!!truck) {
+                truck_pos_t = 268.75; //hotfix
+                truck_pos_b = truck.getBoundingClientRect()["bottom"];
+                cont_pos_b = document.getElementById("content").getBoundingClientRect()["bottom"]-19.5;
+                window.onscroll = function() {
+                    if (window.pageYOffset >= truck_pos_t) {
+                        if (window.pageYOffset >= (cont_pos_b - truck_pos_b + truck_pos_t)) {
+                            truck.classList.remove("fixed");
+                        } else {
+                            truck.classList.add("fixed");
+                        }
+                    } else {
+                        if (window.pageYOffset < truck_pos_t) {
+                            truck.classList.remove("fixed");
+                        }
+                    }
+                };
+                window.scrollTo(0,0);
+                clearInterval(interval);
+            }
+        },
+        1000
+    );
+//end

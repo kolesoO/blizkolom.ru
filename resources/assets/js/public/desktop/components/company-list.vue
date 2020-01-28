@@ -128,8 +128,8 @@
                 companiesLimit: 20,
                 companiesOffset: 0,
                 companiesList: {
-                    'list': [],
-                    'total': 0
+                    list: [],
+                    total: 0
                 },
                 tablePropCode: [],
                 tableProps: []
@@ -175,8 +175,10 @@
                         'limit': ctx.companiesLimit
                     },
                     (response) => {
-                        for (let key in response.body.list) {
-                            response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
+                        if (response.body.list.length > 0) {
+                            for (let key in response.body.list) {
+                                response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
+                            }
                         }
                         ctx.companiesList = response.body;
                         ctx.refreshSelectedFilters();
@@ -198,9 +200,11 @@
                         'limit': ctx.companiesLimit
                     },
                     (response) => {
-                        for (let key in response.body.list) {
-                            response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
-                            ctx.companiesList.list.push(response.body.list[key]);
+                        if (response.body.list.length > 0) {
+                            for (let key in response.body.list) {
+                                response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
+                                ctx.companiesList.list.push(response.body.list[key]);
+                            }
                         }
                         ctx.refreshSelectedFilters();
                         ctx.initMap();
@@ -255,11 +259,13 @@
                     geoObjectHideIconOnBalloonOpen: false
                 });
                 window.yandexMap.behaviors.disable("scrollZoom");
-                for (let key in this.companiesList.list) {
-                    mapPlacemark = this.getPlacemarkData(this.companiesList.list[key]);
-                    if (!!mapPlacemark) {
-                        window.yandexMap.geoObjects.add(mapPlacemark);
-                        mapPlacemarks.push(mapPlacemark);
+                if (this.companiesList.list.length > 0) {
+                    for (let key in this.companiesList.list) {
+                        mapPlacemark = this.getPlacemarkData(this.companiesList.list[key]);
+                        if (!!mapPlacemark) {
+                            window.yandexMap.geoObjects.add(mapPlacemark);
+                            mapPlacemarks.push(mapPlacemark);
+                        }
                     }
                 }
                 window.clusterer.add(mapPlacemarks);
@@ -270,27 +276,6 @@
                         zoomMargin: 9
                     }
                 );
-
-                //scrolling
-                let truck = document.getElementById("yamap"),
-                    truck_pos_t = truck.getBoundingClientRect()["top"],
-                    truck_pos_b = truck.getBoundingClientRect()["bottom"],
-                    cont_pos_b = document.getElementById("content").getBoundingClientRect()["bottom"]-19.5;
-
-                window.onscroll = function() {
-                    if (window.pageYOffset >= truck_pos_t) {
-                        if (window.pageYOffset >= (cont_pos_b - truck_pos_b + truck_pos_t)) {
-                            truck.classList.remove("fixed");
-                        } else {
-                            truck.classList.add("fixed");
-                        }
-                    } else {
-                        if (window.pageYOffset < truck_pos_t) {
-                            truck.classList.remove("fixed");
-                        }
-                    }
-                };
-                //end
             },
             getPrices: function(companyId, propertyCode) {
                 let ctx = this;

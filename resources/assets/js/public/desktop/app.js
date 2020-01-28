@@ -62,7 +62,7 @@ if (!!document.getElementById("app")) {
                             promiseAction(resp);
                         })
                         .catch(error => {
-                            alert(error);
+                            console.log(error);
                         });
                 }
             }
