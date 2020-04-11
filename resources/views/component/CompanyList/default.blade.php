@@ -4,12 +4,12 @@
             <div id="comp-{{ $item->id }}" class="card">
                 <div class="top">
                     <div class="image">
-                        @if ($item->detail_picture)
+                        @if ($item->preview_picture)
                             <img
-                                    src="{{ $item->detail_picture }}"
-                                    data-src="{{ $item->detail_picture }}"
-                                    data-srcset="{{ $item->detail_picture }}"
-                                    srcset="{{ $item->detail_picture }}"
+                                    src="{{ $item->preview_picture }}"
+                                    data-src="{{ $item->preview_picture }}"
+                                    data-srcset="{{ $item->preview_picture }}"
+                                    srcset="{{ $item->preview_picture }}"
                             >
                         @else
                             <img
