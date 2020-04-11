@@ -242,6 +242,7 @@ h1 {
     border-left: 1px solid #d4d2d2;
     box-sizing: border-box;
     height: calc(100vh - 14em);
+    overflow: hidden;
 }
 .map-btn {
     background: #fafafa;

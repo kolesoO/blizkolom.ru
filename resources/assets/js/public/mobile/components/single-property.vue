@@ -1,34 +1,40 @@
 <template>
-    <div>
-        <div class="region not-opened">
-            <span>{{ title }}</span>
-        </div>
+    <div class="region disable">
         <div class="regions">
             <div class="search">
                 <input
                         type="search"
-                        placeholder="Поиск"
+                        placeholder="Поиск города"
                         value=""
                         v-model="searchInput"
                         @keyup="search"
                 >
                 <div class="result">
                     <div v-if="searchedItems.length === 0 && searchInput.length > 0">Город не найден!</div>
-                    <a
+                    <div
                             class="reg-load"
                             v-for="item in searchedItems"
-                            :href="item.url"
-                    >{{ item.title }}</a>
+                    >
+                        <a :href="item.url">{{ item.title }}</a>
+                    </div>
                 </div>
             </div>
             <div class="cities">
+                <div class="title">Сейчас выбран</div>
+                <p>{{ title }}</p>
+            </div>
+            <div class="cities">
                 <div class="title">Популярные города</div>
-                <a
+                <div
                         class="reg-load"
                         v-for="item in items"
-                        :href="item.url"
-                >{{ item.title }}</a>
+                >
+                    <a :href="item.url">{{ item.title }}</a>
+                </div>
             </div>
+        </div>
+        <div class="region-smoke">
+            <img src="/images/cancel.svg" alt="Выход">
         </div>
     </div>
 </template>

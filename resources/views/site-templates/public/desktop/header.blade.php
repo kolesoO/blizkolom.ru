@@ -21,10 +21,12 @@
             <div class="content-head">
                 <div class="logo">
                     <div class="main-page">
-                        <a href="/"><img src="https://static.blizkolom.ru/img/blizkolom.png" alt="BlizkoLom" title="Все пункты приема"></a>
+                        <a href="/">
+                            <img src="https://static.blizkolom.ru/img/blizkolom.png" alt="BlizkoLom" title="Все пункты приема">
+                        </a>
                     </div>
                 </div>
-                <form action="/action/search" method="post" class="search-site">
+                <form method="post" class="search-site">
                     <input type="search" name="q" placeholder="Поиск среди 121 пункта сдачи металлолома">
                     <input type="submit" class="header-search-btn" value="">
                 </form>

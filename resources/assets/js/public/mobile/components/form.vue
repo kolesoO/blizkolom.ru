@@ -14,7 +14,7 @@
                         required
                 >
             </p>
-            <button type="submit" class="btn-form enable">Перезвонить мне</button>
+            <button type="submit" class="btn-form">Перезвонить мне</button>
             <p v-if="isSent" class="green">Сообщение успешно отправлено! Ждите, пока пункт приема вам перезвонит</p>
         </form>
     </div>

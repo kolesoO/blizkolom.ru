@@ -28,7 +28,7 @@ class FormResultsController extends Controller
         FormResult::query()
             ->insert([
                 'content' => json_encode($request->all()),
-                'form_id' => $form->id
+                'form_id' => $form->id,
             ]);
 
         return [];

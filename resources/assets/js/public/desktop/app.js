@@ -52,18 +52,29 @@ if (!!document.getElementById("app")) {
              */
             doRequest: function(method, apiCode, headersList, paramsList, promiseAction) {
                 let ctx = this;
+
                 method = method.toLowerCase();
                 if (typeof ctx.$http[method] == "function") {
-                    ctx.$http[method](ctx.getApiUrl(apiCode), {
-                        headers: headersList,
-                        params: paramsList
-                    })
+                    ctx.$http[method](
+                        ctx.getApiUrl(apiCode),
+                        ctx.getRequestData(method, headersList, paramsList)
+                    )
                         .then(resp => {
                             promiseAction(resp);
                         })
                         .catch(error => {
                             console.log(error);
                         });
+                }
+            },
+            getRequestData: function (method, headersList, paramsList) {
+                if (method === 'get') {
+                    return {
+                        headers: headersList,
+                        params: paramsList
+                    };
+                } else if (method === 'post') {
+                    return paramsList;
                 }
             }
         },

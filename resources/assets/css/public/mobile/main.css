@@ -137,7 +137,7 @@ h1.crd {
     margin-bottom: .5em;
 }
 .fltr_slct div::after {
-    content: "вњ•";
+    content: "✕";
     position: absolute;
     right: 0.5em;
     width: 1em;
@@ -168,7 +168,7 @@ h1.crd {
     padding: .25em .5em;
 }
 .fast-links a:after {
-    content: 'в†“';
+    content: '↓';
     padding-left: .25em;
     opacity: .5;
 }

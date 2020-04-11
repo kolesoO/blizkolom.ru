@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\CompanyPrices;
 use App\Models\CompanyProperty;
 use App\Models\File;
 use App\Models\Property;
@@ -18,9 +19,10 @@ class Pages extends WebPageController
 
     /**
      * @param string|null $propertyCode
+     * @param string|null $filteredPropertiesCode
      * @return View
      */
-    public function index(string $propertyCode = null): View
+    public function index(string $propertyCode = null, string $filteredPropertiesCode = null): View
     {
         $property = Property::query()
             ->where([
@@ -28,21 +30,71 @@ class Pages extends WebPageController
                 ['urlable', 1],
                 ['root_url', 1]
             ])
-            ->first(['id', 'title']);
+            ->first();
 
         if (!$property) {
-            return $this->section(null, $propertyCode);
+            return $this->section(null, $propertyCode, null, $filteredPropertiesCode);
         }
+
+        $propsId = [$property->id];
+        $priceProps = [5, 6, 20, 26];
+        $additPriceProps = [];
+
+        //filtered props
+        if ($filteredPropertiesCode) {
+            $props = $this->parseFilterCode($filteredPropertiesCode);
+            if (count($props) > 0) {
+                $rs = Property::query()
+                    ->where('filtered', 1)
+                    ->whereIn('code', $props)
+                    ->pluck('id');
+                $propsId += array_merge($propsId, $rs->toArray());
+                $additPriceProps = array_reverse($rs->toArray());
+            }
+        }
+        //end
+
+        $propsId = array_unique($propsId);
 
         return view($this->getActualPage('index'), array_merge(
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
-                        "code" => "/" . $propertyCode
+                        "code" => "/{root_code}",
+                        "replace" => [
+                            "title" => [
+                                "{genetiv}" => $property->genetiv,
+                                "{gdetiv}" => $property->gdetiv,
+                            ],
+                            "description" => [
+                                "{genetiv}" => $property->genetiv,
+                                "{gdetiv}" => $property->gdetiv,
+                            ],
+                            "keywords" => [
+                                "{genetiv}" => $property->genetiv,
+                                "{gdetiv}" => $property->gdetiv,
+                            ],
+                            "h1" => [
+                                "{genetiv}" => $property->genetiv,
+                                "{gdetiv}" => $property->gdetiv,
+                            ],
+                        ]
                     ]),
                 ],
                 'root_property_title' => $property->title,
-                'property_id' => [$property->id]
+                'property_id' => $propsId,
+                'company_list' => app()->component->includeComponent("CompanyList", $this->getWithDevicePrefix("default"), [
+                    "root_page_url" => '/',
+                    "date_format" => "d.m.Y",
+                    'limit' => 10,
+                    'property_code' => $propertyCode,
+                    'property_id' => $propsId,
+                    'price_props' => $priceProps,
+                    'additional_price_props' => $additPriceProps,
+                    'filter' => [
+                        'property_id' => $propsId,
+                    ]
+                ])
             ],
             $this->getHeaderData([
                 'menu_url_prefix' => "/" . $propertyCode
@@ -55,18 +107,17 @@ class Pages extends WebPageController
      * @param string|null $propertyCode
      * @param string $property2Code
      * @param string|null $property3Code
+     * @param string|null $filteredPropertiesCode
      * @return View
      */
-    public function section(?string $propertyCode, string $property2Code, string $property3Code = null): View
-    {
-        //fix
-        if (!is_null($propertyCode) && !is_null($property2Code) && is_null($property3Code)) {
-            $property3Code = $property2Code;
-            $property2Code = $propertyCode;
-            $propertyCode = null;
-        }
-        if ($property2Code == 'priem') {
-            return $this->company($propertyCode, $property3Code);
+    public function section(
+        ?string $propertyCode,
+        string $property2Code,
+        string $property3Code = null,
+        string $filteredPropertiesCode = null
+    ): View {
+        if ($propertyCode == 'priem') {
+            return $this->company(null, $property2Code);
         }
         //end
 
@@ -76,7 +127,20 @@ class Pages extends WebPageController
                 ['urlable', 1],
                 ['root_url', 1]
             ])
-            ->firstOrFail();
+            ->first();
+
+        if (!$rootProperty && !$property3Code) {
+            $property3Code = $property2Code;
+            $property2Code = $propertyCode;
+            $propertyCode = null;
+            $rootProperty = Property::query()
+                ->where([
+                    ['code', $propertyCode],
+                    ['urlable', 1],
+                    ['root_url', 1]
+                ])
+                ->firstOrFail();
+        }
 
         $mainProperty = Property::query()
             ->where([
@@ -96,27 +160,89 @@ class Pages extends WebPageController
         }
 
         $mainProperty = $mainProperty->toArray();
-        $propsId = [$mainProperty['id']];
+        $propsId = [$rootProperty->id, $mainProperty['id']];
+
         if (isset($innerProperty)) {
             $innerProperty = $innerProperty->toArray();
             $propsId[] = $innerProperty['id'];
         }
 
+        $priceProps = [5, 6, 20, 26];
+        $additPriceProps = [];
+
+        //filtered props
+        if ($filteredPropertiesCode) {
+            $props = $this->parseFilterCode($filteredPropertiesCode);
+            if (count($props) > 0) {
+                $rs = Property::query()
+                    ->where('filtered', 1)
+                    ->whereIn('code', $props)
+                    ->pluck('id');
+                $propsId += array_merge($propsId, $rs->toArray());
+                $additPriceProps = array_reverse($rs->toArray());
+            }
+        }
+        //end
+
+        $propsId = array_unique($propsId);
+
+        //seo
+        $seoCode = '/{root_code}/' . $property2Code;
+        if (!is_null($property3Code)) {
+            $seoCode .= '/' . $property3Code;
+        }
+        //end
+
         return view($this->getActualPage('section'), array_merge(
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
-                        "code" => "/" . $propertyCode
+                        "code" => $seoCode,
+                        "replace" => [
+                            "title" => [
+                                "{genetiv}" => $rootProperty->genetiv,
+                                "{gdetiv}" => $rootProperty->gdetiv,
+                            ],
+                            "description" => [
+                                "{genetiv}" => $rootProperty->genetiv,
+                                "{gdetiv}" => $rootProperty->gdetiv,
+                            ],
+                            "keywords" => [
+                                "{genetiv}" => $rootProperty->genetiv,
+                                "{gdetiv}" => $rootProperty->gdetiv,
+                            ],
+                            "h1" => [
+                                "{genetiv}" => $rootProperty->genetiv,
+                                "{gdetiv}" => $rootProperty->gdetiv,
+                            ],
+                        ]
                     ]),
                 ],
                 'property_id' => $propsId,
-                'root_property_title' => $rootProperty->title
+                'root_property_title' => $rootProperty->title,
+                'company_list' => app()->component->includeComponent("CompanyList", $this->getWithDevicePrefix("default"), [
+                    "root_page_url" => '/',
+                    "date_format" => "d.m.Y",
+                    'limit' => 10,
+                    'property_code' => $propertyCode,
+                    'property_id' => $propsId,
+                    'additional_price_props' => $additPriceProps,
+                    'price_props' => $priceProps,
+                    'filter' => [
+                        'property_id' => $propsId,
+                    ],
+                ])
             ],
             $this->getHeaderData(),
             $this->getFooterData()
         ));
     }
 
+    /**
+     * @param string|null $propertyCode
+     * @param string $companyCode
+     * @return View
+     */
     public function company(?string $propertyCode, string $companyCode): View
     {
         $rootProperty = Property::query()
@@ -142,29 +268,114 @@ class Pages extends WebPageController
         if ($image = File::query()->find($company->preview_picture)) {
             $image->path = File::withRemoteDomain($image->path);
             $company->preview_picture = $image;
+        } else {
+            $company->preview_picture = null;
         }
         if ($image = File::query()->find($company->detail_picture)) {
             $image->path = File::withRemoteDomain($image->path);
             $company->detail_picture = $image;
+        } else {
+            $company->detail_picture = null;
         }
         //end
+
+        //prices
+        $priceProps = Property::query()
+            ->whereIn('id', [5, 6, 20, 26])
+            ->get()
+            ->each(function (Property $item) {
+                $item->childs = Property::query()
+                    ->where('parent_id', $item->id)
+                    ->orderByDesc('id')
+                    ->get()
+                    ->each(function (Property $subItem) {
+                        $subItem->childs = Property::query()
+                            ->where('parent_id', $subItem->id)
+                            ->orderByDesc('id')
+                            ->get();
+                    });
+            });
+
+        $priceInfo = [];
+        $itemPrices = CompanyPrices::query()
+            ->where('company_id', $company->id)
+            ->get();
+        $priceProps->each(function (Property $pricePropItem) use ($itemPrices, &$priceInfo) {
+            $priceList = [];
+            $pricePropItem->childs->each(function (Property $childPricePropItem) use ($itemPrices, &$priceList) {
+                $itemPrices->each(function (CompanyPrices $itemPrice) use ($childPricePropItem, &$priceList, $itemPrices) {
+                    if ($childPricePropItem->id === $itemPrice->property_id) {
+                        $childs = [];
+                        $childPricePropItem->childs->each(function ($subChildPricePropItem) use ($itemPrices, &$childs) {
+                            $itemPrices->each(function (CompanyPrices $itemPrice) use ($subChildPricePropItem, &$childs) {
+                                if ($subChildPricePropItem->id === $itemPrice->property_id) {
+                                    $childs[] = [
+                                        'type' => $subChildPricePropItem->title,
+                                        'value' => $itemPrice->value,
+                                    ];
+                                }
+                            });
+                        });
+                        $priceList[] = [
+                            'type' => $childPricePropItem->title,
+                            'value' => $itemPrice->value,
+                            'childs' => $childs,
+                        ];
+                    }
+                });
+            });
+            if (count($priceList) > 0) {
+                $priceInfo[] = [
+                    'id' => $pricePropItem->id,
+                    'title' => $pricePropItem->title,
+                    'values' => $priceList,
+                ];
+            }
+        });
+        $company->prices = $priceInfo;
+        //end
+
+        $company->openTime = $company->openCloseTime(
+            strtotime(date('H:i', time()))
+        );
+
+        $company->rating = $company->getRating();
 
         return view($this->getActualPage('company'), array_merge(
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
-                        "code" => $companyCode,
+                        "code" => '/priem/{code}',
                         "replace" => [
                             "title" => [
-                                "{title}" => $company->title
+                                '{title}' => str_replace(
+                                    ['{genetiv}', '{gdetiv}'],
+                                    [$rootProperty->genetiv, $rootProperty->gdetiv],
+                                    $company->title
+                                )
                             ],
                             "description" => [
-                                "{description}" => $company->description
+                                "{description}" => str_replace(
+                                    ['{genetiv}', '{gdetiv}'],
+                                    [$rootProperty->genetiv, $rootProperty->gdetiv],
+                                    $company->description
+                                )
                             ],
                             "keywords" => [
-                                "{keywords}" => $company->keywords
+                                "{keywords}" => str_replace(
+                                    ['{genetiv}', '{gdetiv}'],
+                                    [$rootProperty->genetiv, $rootProperty->gdetiv],
+                                    $company->keywords
+                                )
                             ],
-                        ]
+                            "h1" => [
+                                "{h1}" => str_replace(
+                                    ['{genetiv}', '{gdetiv}'],
+                                    [$rootProperty->genetiv, $rootProperty->gdetiv],
+                                    $company->h1
+                                )
+                            ],
+                        ],
                     ]),
                 ],
                 'company' => $company,
@@ -176,23 +387,24 @@ class Pages extends WebPageController
     }
 
     /**
+     * @param string|null $propertyCode
      * @return View
      */
-    public function how(): View
+    public function how(?string $propertyCode = null): View
     {
         $property = Property::query()
             ->where([
-                ['code', null],
+                ['code', $propertyCode],
                 ['urlable', 1],
                 ['root_url', 1]
             ])
-            ->first(['id', 'title']);
+            ->firstOrFail(['id', 'title']);
 
         return view($this->getActualPage('how-to'), array_merge(
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
-                        "code" => "/kak-sdat"
+                        "code" => "/{root_code}/kak-sdat"
                     ]),
                 ],
                 'root_property_title' => $property->title,
@@ -204,23 +416,24 @@ class Pages extends WebPageController
     }
 
     /**
+     * @param string|null $propertyCode
      * @return View
      */
-    public function netochnost(): View
+    public function netochnost(?string $propertyCode = null): View
     {
         $property = Property::query()
             ->where([
-                ['code', null],
+                ['code', $propertyCode],
                 ['urlable', 1],
                 ['root_url', 1]
             ])
-            ->first(['id', 'title']);
+            ->firstOrFail(['id', 'title']);
 
         return view($this->getActualPage('netochnost'), array_merge(
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
-                        "code" => "/netochnost"
+                        "code" => "/{root_code}/netochnost"
                     ]),
                 ],
                 'root_property_title' => $property->title,
@@ -229,5 +442,62 @@ class Pages extends WebPageController
             $this->getHeaderData(),
             $this->getFooterData()
         ));
+    }
+
+    public function prices(): View
+    {
+        $prices = CompanyPrices::query()
+            ->get();
+        $priceIds = array_unique(
+            $prices->pluck('property_id')
+                ->toArray()
+        );
+
+        $allProps = Property::query()
+            ->get()
+            ->toArray();
+
+        $propsTree = [];
+        foreach ($allProps as $prop) {
+            if (!is_null($prop['parent_id'])) continue;
+            foreach ($allProps as $prop2) {
+                if ($prop2['parent_id'] !== $prop['id']) continue;
+                if (!in_array($prop2['id'], $priceIds)) continue;
+                foreach ($allProps as $prop3) {
+                    if ($prop3['parent_id'] !== $prop2['id']) continue;
+                    if (!in_array($prop3['id'], $priceIds)) continue;
+                    foreach ($allProps as $prop4) {
+                        if ($prop4['parent_id'] !== $prop3['id']) continue;
+                        if (!in_array($prop4['id'], $priceIds)) continue;
+                        $prop3['childs'][] = $prop4;
+                    }
+                    $prop2['childs'][] = $prop3;
+                }
+                $prop['childs'][] = $prop2;
+            }
+            if (isset($prop['childs']) && $prop['childs']) {
+                $propsTree[] = $prop;
+            }
+        }
+
+        dd($propsTree);
+    }
+
+    public function pricesSection(string $propCode, ?string $propCode2 = null): View
+    {
+
+    }
+
+    /**
+     * @param string $code
+     * @return array
+     */
+    protected function parseFilterCode(string $code): array
+    {
+        if (strpos($code, 'clear') !== false) {
+            return [];
+        }
+
+        return explode('or', str_replace('-or-', 'or', $code));
     }
 }

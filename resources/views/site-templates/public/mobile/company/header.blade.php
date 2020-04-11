@@ -45,4 +45,4 @@
             </div>
         </aside>
         <v-single-property title="{{ $root_property_title }}"></v-single-property>
-        <h1>{{ $header["seo"]["h1"] }}</h1>
+        <h1 class="crd">{{ $header["seo"]["h1"] }}</h1>

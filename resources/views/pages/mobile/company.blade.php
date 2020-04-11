@@ -1,4 +1,4 @@
-@include("site-templates.public.desktop.header")
+@include("site-templates.public.mobile.company.header")
 
 <div class="fast-links">
     <a href="#about">Описание</a>
@@ -22,7 +22,9 @@
         <div class="about">{{ $company->detail_text }}</div>
         <div class="phone">
             <span>{{ $company->phone }}</span>
-            <div class="btn-callback" data-company_name="{{ $company->name }}">обратный звонок</div>
+            <div class="btn-callback" data-company_name="{{ $company->name }}">
+                <img src="/images/callback-gray.svg">
+            </div>
         </div>
         <div class="mail">{{ $company->email }}</div>
         <div class="site">{{ $company->url }}</div>
@@ -101,4 +103,4 @@
     </div>
 </div-->
 
-@include("site-templates.public.desktop.footer")
+@include("site-templates.public.mobile.company.footer")

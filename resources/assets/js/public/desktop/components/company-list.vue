@@ -1,119 +1,88 @@
 <template>
     <div>
-        <div id="filters">
-            <div class="fltr_slct" v-for="item in selectedFilters">
-                <div @click="updateSelectedFilterIds(item.id, true)">{{ item.title }}</div>
-            </div>
-            <div class="fltr" v-for="item in filtersList">
-                <div class="">{{ item.title }}</div>
-                <div class="open closed">
-                    <ul class="shadow">
-                        <li
-                                v-for="childItem in item.childs"
-                                :class="childItem.class"
-                                @click="updateSelectedFilterIds(childItem.id)"
-                        >{{ childItem.title }}</li>
-                        <li class="btn" @click="filterData">Применить</li>
-                    </ul>
+        <p v-show="isEmptyCompanies()">Компании не найдены</p>
+        <div
+                v-for="company in companiesList.list"
+                :id="company.id_formatted"
+                class="card"
+        >
+            <div class="top">
+                <div class="image">
+                    <img
+                            v-if="company.preview_picture"
+                            :src="company.preview_picture"
+                            :data-src="company.preview_picture"
+                            :data-srcset="company.preview_picture"
+                            :srcset="company.preview_picture"
+                    >
+                    <img
+                            v-else
+                            src="https://static.blizkolom.ru/img/company.png"
+                            data-src="https://static.blizkolom.ru/img/company.png"
+                            data-srcset="https://static.blizkolom.ru/img/company.png"
+                            srcset="https://static.blizkolom.ru/img/company.png"
+                    >
+                    <div :class="['rating', company.rating['info']]">{{ company.rating['rating'] }}</div>
                 </div>
-            </div>
-        </div>
-        <div id="content">
-            <div id="listing">
-                <div id="yamap" class="fixed">
-                    <!--div class="map-btn">
-                        <span class="opened">Увеличить карту</span>
-                        <span class="closed">Уменьшить карту</span>
-                    </div-->
-                    <div id="map"></div>
-                    <div class="promo-map">
-                        <span class="title">Не можете найти свой пункт приема?</span>
-                        <span>Добавьте его сами, это бесплатно!</span>
-                        <div class="btn">Добавить компанию</div>
-                    </div>
+                <div class="name">
+                    <a :href="company.page_url">{{ company.name }}</a>
                 </div>
-                <div id="cards">
-                    <p v-show="companiesList.list.length === 0">Компании не найдены</p>
+                <div class="adr">{{ company.contacts }}</div>
+                <div class="coord">{{ company.map_coords_str }}</div>
+                <div class="serv">Лицензия, Физлица, Юрлица, Вывоз, Демонтаж</div>
+                <div class="phone">
+                    <span>{{ company.phone }}</span>
                     <div
-                            v-for="company in companiesList.list"
-                            :id="company.id_formatted"
-                            class="card"
-                    >
-                        <div class="top">
-                            <div class="image">
-                                <img
-                                        src="https://static.blizkolom.ru/img/company/moscow/pmk-mini.jpg"
-                                        data-src="https://static.blizkolom.ru/img/company/moscow/pmk-mini.jpg"
-                                        data-srcset="https://static.blizkolom.ru/img/company/moscow/pmk-mini.jpg"
-                                        srcset="https://static.blizkolom.ru/img/company/moscow/pmk-mini.jpg"
-                                >
-                                <div class="rating good">5.0</div>
-                            </div>
-                            <div class="name">
-                                <a :href="company.page_url">{{ company.name }}</a>
-                            </div>
-                            <div class="adr">{{ company.contacts }}</div>
-                            <div class="coord">{{ company.map_coords_str }}</div>
-                            <div class="serv">Лицензия, Физлица, Юрлица, Вывоз, Демонтаж</div>
-                            <div class="phone">
-                                <span>{{ company.phone }}</span>
-                                <div class="btn-callback">обратный звонок</div>
-                            </div>
-                            <div class="mail">{{ company.email }}</div>
-                            <div class="site">{{ company.url }}</div>
-                            <div class="clock green">открыто до 18:00</div>
-                            <!--div class="price">
-                                <span
-                                        v-for="prop in tableProps"
-                                        class="prc-cat"
-                                        @click="getPrices(company.id, prop.code)"
-                                >{{ prop.title }}</span>
-                            </div-->
-                        </div>
-                        <!--div class="bottom">
-                            <table class="price-table">
-                                <thead>
-                                    <tr>
-                                        <th>Тип</th>
-                                        <th>Цена <span>(&lt; 50 кг)</span></th>
-                                        <th>Цена <span>(&gt; 50 кг)</span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Медь</td>
-                                        <td>365 <span>₽/кг</span></td>
-                                        <td>372 <span>₽/кг</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Алюминий</td>
-                                        <td>58 <span>₽/кг</span></td>
-                                        <td>60 <span>₽/кг</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Латунь</td>
-                                        <td>58 <span>₽/кг</span></td>
-                                        <td>60 <span>₽/кг</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Нержавейка</td>
-                                        <td>46 <span>₽/кг</span></td>
-                                        <td>48 <span>₽/кг</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div-->
-                    </div>
-                    <button
-                            class="button"
-                            v-show="companiesList.list.length < companiesList.total"
-                            @click="getMoreData()"
-                    >
-                        <span>Показать еще</span>
-                    </button>
+                            class="btn-callback"
+                            :data-company_name="company.name"
+                    >обратный звонок</div>
+                </div>
+                <div class="mail">{{ company.email }}</div>
+                <div class="site">{{ company.url }}</div>
+                <div
+                        v-if="company.openTime['state'] === 'from'"
+                        :class="['clock', company.openTime['status'] ? 'green' : 'red']"
+                >открыто с {{ company.openTime['time'] }}</div>
+                <div
+                        v-else
+                        :class="['clock', company.openTime['status'] ? 'green' : 'red']"
+                >открыто до {{ company.openTime['time'] }}</div>
+                <div class="price" v-if="company.prices.length > 0">
+                    <span
+                            v-for="(priceInfo, key) in company.prices"
+                            :class="['prc-cat', key === 0 ? 'selected' : '']"
+                            :data-target="['#comp_price-' + company.id + '-' + priceInfo.id]"
+                    >{{ priceInfo.title }}</span>
                 </div>
             </div>
+            <div
+                    v-for="(priceInfo, key) in company.prices"
+                    :id="['comp_price-' + company.id + '-' + priceInfo.id]"
+                    :class="['bottom', key > 0 ? 'closed' : '']"
+            >
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Тип</th>
+                            <th>Цена</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="price in priceInfo.values">
+                            <td>{{ price.type }}</td>
+                            <td>{{ price.value }} <span>₽/кг</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <button
+                class="button"
+                v-show="getCompanyCount() < companiesList.total"
+                @click="getMoreData()"
+        >
+            <span>Показать еще</span>
+        </button>
     </div>
 </template>
 
@@ -122,73 +91,34 @@
         name: "v-company-list",
         data: function() {
             return {
-                filtersList: [],
-                selectedFilters: [],
-                selectedFiltersId: [],
-                companiesLimit: 20,
+                asyncMode: false,
+                startCount: 0,
+                companiesLimit: 10,
                 companiesOffset: 0,
                 companiesList: {
                     list: [],
                     total: 0
                 },
-                tablePropCode: [],
-                tableProps: []
+                selectedFiltersId: [],
+                pricePropsId: [],
+                priceProps: [],
+                filtersData: []
             }
         },
         methods: {
-            updateSelectedFilterIds: function(filterId, submit = false) {
-                let index = this.selectedFiltersId.indexOf(filterId);
-                if (index === -1) {
-                    this.selectedFiltersId.push(filterId);
-                } else {
-                    this.selectedFiltersId.splice(index, 1);
-                }
-                if (submit) {
-                    this.filterData();
-                }
+            getCompanyCount: function () {
+                return this.startCount + this.companiesList.list.length;
             },
-            refreshSelectedFilters: function() {
-                let ctx = this,
-                    item;
-                ctx.selectedFilters = [];
-                for (let key in ctx.filtersList) {
-                    for (let keyInner in ctx.filtersList[key].childs) {
-                        item = ctx.filtersList[key].childs[keyInner];
-                        if (ctx.selectedFiltersId.indexOf(item.id) !== -1) {
-                            ctx.selectedFilters.push(item);
-                            ctx.filtersList[key].childs[keyInner]['class'] = 'select slcted';
-                        } else {
-                            ctx.filtersList[key].childs[keyInner]['class'] = 'select';
-                        }
-                    }
-                }
+            isEmptyCompanies: function () {
+                return this.companiesList.list.length === 0 && this.asyncMode;
             },
-            filterData: function() {
-                let ctx = this;
-                ctx.$root.doRequest(
-                    'GET',
-                    'company',
-                    [],
-                    {
-                        'active': 1,
-                        'property_id': ctx.selectedFiltersId,
-                        'limit': ctx.companiesLimit
-                    },
-                    (response) => {
-                        if (response.body.list.length > 0) {
-                            for (let key in response.body.list) {
-                                response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
-                            }
-                        }
-                        ctx.companiesList = response.body;
-                        ctx.refreshSelectedFilters();
-                        ctx.initMap();
-                    }
-                );
-                ctx.companiesOffset = ctx.companiesLimit;
+            getCompanyId: function (id) {
+                return 'comp-' + id;
             },
             getMoreData: function() {
                 let ctx = this;
+
+                ctx.asyncMode = true;
                 ctx.$root.doRequest(
                     'GET',
                     'company',
@@ -201,147 +131,152 @@
                     },
                     (response) => {
                         if (response.body.list.length > 0) {
-                            for (let key in response.body.list) {
-                                response.body.list[key]['id_formatted'] = 'comp-' + response.body.list[key].id;
-                                ctx.companiesList.list.push(response.body.list[key]);
-                            }
+                            response.body.list.forEach(function (item) {
+                                item['id_formatted'] = ctx.getCompanyId(item.id);
+                                ctx.companiesList.list.push(item);
+                            });
                         }
-                        ctx.refreshSelectedFilters();
-                        ctx.initMap();
                     }
                 );
                 ctx.companiesOffset += ctx.companiesLimit;
             },
-            getPlacemarkData: function(item) {
-                if (!item || typeof item.map_coords != "object") {
-                    return null;
-                }
-                return new window.ymaps.Placemark(
-                    item.map_coords, {
-                        balloonContentBody: [
-                            '<address>',
-                            '<strong><a href="' + item.page_url + '">' + item.name + '</a></strong>',
-                            '<br/>',
-                            item.contacts + ' <span class="red">закрыто до 9:00 пн</span>',
-                            '<br/>',
-                            item.phone,
-                            '<br/>',
-                            '<a href="#comp-' + item.id + '" class="price-link">смотреть цены</a>',
-                            '</address>'
-                        ].join('')
-                    }, {
-                        iconLayout: "default#image",
-                        iconImageHref: "https://static.blizkolom.ru/img/marker.svg",
-                        iconImageSize: [31, 30],
-                        iconImageOffset: [-15, -30],
-                        balloonPane: "outerBalloon"
-                    }
-                );
-            },
-            initMap: function() {
-                let mapPlacemark,
-                    mapPlacemarks = [],
-                    target = document.getElementById('map');
+            updatePriceProps: function () {
+                let ctx = this,
+                    pushedIds = [],
+                    defPriceProps = ctx.getDefaultPriceProps();
 
-                if (!target) {
-                    return;
-                }
-
-                target.innerHTML = '';
-                window.yandexMap = new ymaps.Map("map", {
-                    center: [55.76, 37.64],
-                    zoom: 9
-                });
-                window.clusterer = new ymaps.Clusterer({
-                    preset: 'islands#invertedBlackClusterIcons',
-                    groupByCoordinates: false,
-                    clusterHideIconOnBalloonOpen: false,
-                    geoObjectHideIconOnBalloonOpen: false
-                });
-                window.yandexMap.behaviors.disable("scrollZoom");
-                if (this.companiesList.list.length > 0) {
-                    for (let key in this.companiesList.list) {
-                        mapPlacemark = this.getPlacemarkData(this.companiesList.list[key]);
-                        if (!!mapPlacemark) {
-                            window.yandexMap.geoObjects.add(mapPlacemark);
-                            mapPlacemarks.push(mapPlacemark);
+                ctx.priceProps = [];
+                ctx.filtersData.forEach(function (item) {
+                    if (ctx.pricePropsId.indexOf(item.id) !== -1 && pushedIds.indexOf(item.id) === -1) {
+                        if (defPriceProps.indexOf(item.id) === -1) {
+                            ctx.priceProps.unshift(item)
+                        } else {
+                            ctx.priceProps.push(item);
                         }
+                        pushedIds.push(item.id);
+                    } else if (!!item.childs) {
+                        item.childs.forEach(function (childItem) {
+                            if (ctx.pricePropsId.indexOf(childItem.id) !== -1 && pushedIds.indexOf(childItem.id) === -1) {
+                                if (defPriceProps.indexOf(childItem.id) === -1) {
+                                    ctx.priceProps.unshift(childItem)
+                                } else {
+                                    ctx.priceProps.push(childItem);
+                                }
+                                pushedIds.push(childItem.id);
+                            } else if (!!childItem.childs) {
+                                childItem.childs.forEach(function (subChildItem) {
+                                    if (ctx.pricePropsId.indexOf(subChildItem.id) !== -1 && pushedIds.indexOf(subChildItem.id) === -1) {
+                                        if (defPriceProps.indexOf(subChildItem.id) === -1) {
+                                            ctx.priceProps.unshift(subChildItem)
+                                        } else {
+                                            ctx.priceProps.push(subChildItem);
+                                        }
+                                        pushedIds.push(subChildItem.id);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                })
+            },
+            getDefaultPriceProps: function () {
+                let result = [];
+
+                if (!!this.$el.getAttribute('price_props')) {
+                    result =  this.$el.getAttribute('price_props').split(',');
+                    for (let key in result) {
+                        result[key] = parseInt(result[key]);
                     }
                 }
-                window.clusterer.add(mapPlacemarks);
-                window.yandexMap.geoObjects.add(window.clusterer);
-                window.yandexMap.setBounds(
-                    window.yandexMap.geoObjects.getBounds(),
-                    {
-                        zoomMargin: 9
-                    }
-                );
-            },
-            getPrices: function(companyId, propertyCode) {
-                let ctx = this;
-                ctx.$root.doRequest(
-                    'GET',
-                    'price',
-                    [],
-                    {
-                        'company_id': [companyId],
-                        'property_code': propertyCode
-                    },
-                    (response) => {
 
-                    }
-                );
+                return result;
             }
         },
         mounted() {
-            if (!!this.$el.getAttribute('property_id')) {
-                this.selectedFiltersId = this.$el.getAttribute('property_id').split(',');
-                for (let key in this.selectedFiltersId) {
-                    this.selectedFiltersId[key] = parseInt(this.selectedFiltersId[key]);
+            let ctx = this;
+
+            ctx.pricePropsId = ctx.getDefaultPriceProps();
+
+            if (!!ctx.$el.getAttribute('property_id')) {
+                ctx.selectedFiltersId = ctx.$el.getAttribute('property_id').split(',');
+                for (let key in ctx.selectedFiltersId) {
+                    ctx.selectedFiltersId[key] = parseInt(ctx.selectedFiltersId[key]);
                 }
             }
-            if (!!this.$el.getAttribute('table_property_code')) {
-                this.tablePropCode = this.$el.getAttribute('table_property_code').split(',');
+
+            if (!!ctx.$el.getAttribute('start_count')) {
+                ctx.companiesOffset = parseInt(ctx.$el.getAttribute('start_count'));
+                ctx.startCount = ctx.companiesOffset;
             }
 
-            let ctx = this,
-                interval = setInterval(
-                    function() {
-                        if (typeof window.ymaps == 'object') {
-                            ctx.$root.doRequest(
-                                'GET',
-                                'property',
-                                [],
-                                {
-                                    'filtered': '1'
-                                },
-                                (response) => {
-                                    let item, itemInner;
-                                    for (let key in response.body) {
-                                        item = response.body[key];
-                                        if (ctx.tablePropCode.indexOf(item.code) > -1) {
-                                            ctx.tableProps.push(item);
+            if (!!ctx.$el.getAttribute('total_count')) {
+                ctx.companiesList.total = parseInt(ctx.$el.getAttribute('total_count'));
+            }
+
+            ctx.$root.$on('company-list-updated', function (data) {
+                let syncWrapper = document.getElementById('sync-list'),
+                    priceList,
+                    priceInfo;
+
+                if (!!syncWrapper) {
+                    syncWrapper.remove();
+                }
+
+                ctx.asyncMode = true;
+                ctx.startCount = 0;
+                ctx.companiesList.list = [];
+
+                data.list.forEach(function (item) {
+                    item['id_formatted'] = ctx.getCompanyId(item.id);
+                    priceInfo = [];
+                    if (item.prices.length > 0) {
+                        ctx.priceProps.forEach(function (pricePropItem) {
+                            priceList = [];
+                            if (!!pricePropItem.childs) {
+                                pricePropItem.childs.forEach(function (pricePropItem) {
+                                    item.prices.forEach(function(itemPrice) {
+                                        if (pricePropItem.id === itemPrice.property_id) {
+                                            priceList.push({
+                                                type: pricePropItem.title,
+                                                value: itemPrice.value
+                                            });
                                         }
-                                        if (!item.parent_id) {
-                                            item['childs'] = [];
-                                            for (let keyInner in response.body) {
-                                                itemInner = response.body[keyInner];
-                                                if (itemInner.parent_id === item.id) {
-                                                    itemInner['class'] = 'select';
-                                                    item['childs'].push(itemInner);
-                                                }
-                                            }
-                                            ctx.filtersList.push(item);
-                                        }
-                                    }
-                                    ctx.filterData();
-                                }
-                            );
-                            clearInterval(interval);
-                        }
-                    },
-                    1000
-                );
+                                    });
+                                });
+                            }
+                            if (priceList.length > 0) {
+                                priceInfo.push({
+                                    id: pricePropItem.id,
+                                    title: pricePropItem.title,
+                                    values: priceList
+                                });
+                            }
+                        });
+                    }
+                    item.prices = priceInfo;
+                    ctx.companiesList.list.push(item);
+                });
+                ctx.companiesList.total = data.total;
+            });
+
+            ctx.$root.$on('selected-filters-updated', function (filterIds) {
+                ctx.selectedFiltersId = filterIds;
+
+                //price props
+                ctx.pricePropsId = ctx.getDefaultPriceProps();
+                ctx.selectedFiltersId.forEach(function (id) {
+                    if (ctx.pricePropsId.indexOf(id) === -1) {
+                        ctx.pricePropsId.push(id);
+                    }
+                });
+                ctx.updatePriceProps();
+                //end
+            });
+
+            ctx.$root.$on('filters-data-created', function (data) {
+                ctx.filtersData = data;
+                ctx.updatePriceProps();
+            });
         }
     }
 </script>

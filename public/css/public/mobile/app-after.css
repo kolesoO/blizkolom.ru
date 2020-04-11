@@ -95,16 +95,16 @@
     background-position: 50% 50%;
 }
 .card .phone:before {
-    background-image: url('/resource/phone-gray.svg');
+    background-image: url('/images/phone-gray.svg');
 }
 .card .mail:before {
-    background-image: url('/resource/email-gray.svg');
+    background-image: url('/images/email-gray.svg');
 }
 .card .site:before {
-    background-image: url('/resource/site-gray.svg');
+    background-image: url('/images/site-gray.svg');
 }
 .card .clock:before {
-    background-image: url('/resource/clock-gray.svg');
+    background-image: url('/images/clock-gray.svg');
 }
 .green {
     color: #009c48;
@@ -402,6 +402,10 @@ address strong a {
 .regions .cities div {
     line-height: 2.75em;
 }
+.regions .reg-load a{
+    color: inherit;
+    text-decoration: none;
+}
 :focus {
     outline: 0;
 }
@@ -522,7 +526,7 @@ address a.price-link {
     line-height: 1em;
 }
 .fltr div.open ul li.select.slcted::before {
-    content: "вњ”";
+    content: "✔";
     background: rgb(241, 155, 66);
     border-color: rgb(241, 155, 66);
 }
@@ -643,8 +647,8 @@ tr.title {
     opacity: .5;
 }
 .like:before {
-    background-image: url(/resource/thumbs-up.svg);
+    background-image: url(/images/thumbs-up.svg);
 }
 .dislike:before {
-    background-image: url(/resource/thumbs-down.svg);
+    background-image: url(/images/thumbs-down.svg);
 }

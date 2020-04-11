@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\CompanyPrices;
+use App\Models\File;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -19,6 +21,7 @@ class CompanyController extends Controller
     {
         $propertyCode = '';
         $builder = Company::query()
+            ->where('active', $request->get('active', 1))
             ->offset($request->get('offset', 0));
 
         if ($request->get('property_id', false)) {
@@ -87,6 +90,31 @@ class CompanyController extends Controller
                     ],
                     false
                 );
+
+                //picture
+                if ($fileInfo = File::query()->find($item->preview_picture)) {
+                    $item->preview_picture = File::withRemoteDomain($fileInfo->path);
+                } else {
+                    $item->preview_picture = null;
+                }
+                //end
+
+                //prices
+                $priceBuilder = CompanyPrices::query()
+                    ->where('company_id', $item->id);
+
+//                if (is_array($actualPropIds) && count($actualPropIds) > 0) {
+//                    $priceBuilder->whereIn('property_id', $actualPropIds);
+//                }
+
+                $item->prices = $priceBuilder->get();
+                //end
+
+                $item->openTime = $item->openCloseTime(
+                    strtotime(date('H:i', time()))
+                );
+
+                $item->rating = $item->getRating();
 
                 return $item;
             });

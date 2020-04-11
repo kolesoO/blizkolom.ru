@@ -4,7 +4,7 @@
             <div @click="updateSelectedFilterIds(item.id, true)">{{ item.title }}</div>
         </div>
         <div class="fltr" v-for="item in filtersList">
-            <div>{{ item.title }}</div>
+            <div class="">{{ item.title }}</div>
             <div class="open closed">
                 <ul class="shadow">
                     <li

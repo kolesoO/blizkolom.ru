@@ -50,6 +50,10 @@ class WebPageController extends Controller
                     "code" => "to_points",
                     'menu_url_prefix' => $params['menu_url_prefix'] ?? ''
                 ]),
+                'more' => app()->component->includeComponent("Menu", 'default', [
+                    "code" => "more",
+                    'menu_url_prefix' => $params['menu_url_prefix'] ?? ''
+                ]),
                 'general' => app()->component->includeComponent("Menu", $this->getWithDevicePrefix('general'), [
                     "code" => "general",
                     'menu_url_prefix' => $params['menu_url_prefix'] ?? ''

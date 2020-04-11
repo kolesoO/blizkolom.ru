@@ -26,7 +26,11 @@ class Seo extends Base
                 ->first()) {
                 foreach ($this->arParams["replace"] as $fieldCode => $replaceRules) {
                     if (!isset($record->$fieldCode)) continue;
-                    $record->$fieldCode = str_replace(array_keys($replaceRules), array_values($replaceRules), $record->$fieldCode);
+                    $record->$fieldCode = str_replace(
+                        array_keys($replaceRules),
+                        array_values($replaceRules),
+                        $record->$fieldCode
+                    );
                 }
                 return $record->toArray();
             }

@@ -37,7 +37,7 @@ class PropertyController extends Controller
             ->get()
             ->each(function($item) use ($request) {
                 if ($request->get('with_url', false)) {
-                    $item->url = '/' . (strlen($item->code) > 0 ? $item->code . '/' : '');
+                    $item->url = '/' . $item->code;
                 }
                 return $item;
             })
