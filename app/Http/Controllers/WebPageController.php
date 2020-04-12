@@ -42,22 +42,26 @@ class WebPageController extends Controller
     {
         return [
             'menu' => [
-                'take' => app()->component->includeComponent("Menu", 'default', [
-                    "code" => "take",
-                    'menu_url_prefix' => $params['menu_url_prefix'] ?? ''
-                ]),
-                'to_points' => app()->component->includeComponent("Menu", 'default', [
-                    "code" => "to_points",
-                    'menu_url_prefix' => $params['menu_url_prefix'] ?? ''
-                ]),
-                'more' => app()->component->includeComponent("Menu", 'default', [
-                    "code" => "more",
-                    'menu_url_prefix' => $params['menu_url_prefix'] ?? ''
-                ]),
-                'general' => app()->component->includeComponent("Menu", $this->getWithDevicePrefix('general'), [
-                    "code" => "general",
-                    'menu_url_prefix' => $params['menu_url_prefix'] ?? ''
-                ]),
+                'take' => app()->component->includeComponent(
+                    "Menu",
+                    'default',
+                    array_merge(["code" => "take"], $params)
+                ),
+                'to_points' => app()->component->includeComponent(
+                    "Menu",
+                    'default',
+                    array_merge(["code" => "to_points"], $params)
+                ),
+                'more' => app()->component->includeComponent(
+                    "Menu",
+                    'default',
+                    array_merge(["code" => "more"], $params)
+                ),
+                'general' => app()->component->includeComponent(
+                    "Menu",
+                    $this->getWithDevicePrefix('general'),
+                    array_merge(["code" => "general"], $params)
+                ),
             ]
         ];
     }

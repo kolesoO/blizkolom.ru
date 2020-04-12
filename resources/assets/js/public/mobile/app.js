@@ -30,7 +30,7 @@ if (!!document.getElementById("app")) {
     app = new Vue({
         el: "#app",
         data: {
-            host: "http://blizkolom.local",
+            host: location.origin,
             apiVersion: 1
         },
         methods: {
@@ -52,22 +52,33 @@ if (!!document.getElementById("app")) {
              */
             doRequest: function(method, apiCode, headersList, paramsList, promiseAction) {
                 let ctx = this;
+
                 method = method.toLowerCase();
                 if (typeof ctx.$http[method] == "function") {
-                    ctx.$http[method](ctx.getApiUrl(apiCode), {
-                        headers: headersList,
-                        params: paramsList
-                    })
+                    ctx.$http[method](
+                        ctx.getApiUrl(apiCode),
+                        ctx.getRequestData(method, headersList, paramsList)
+                    )
                         .then(resp => {
                             promiseAction(resp);
                         })
                         .catch(error => {
-                            alert(error);
+                            console.log(error);
                         });
+                }
+            },
+            getRequestData: function (method, headersList, paramsList) {
+                if (method === 'get') {
+                    return {
+                        headers: headersList,
+                        params: paramsList
+                    };
+                } else if (method === 'post') {
+                    return paramsList;
                 }
             }
         },
-        mounted(){
+        mounted() {
 
         }
     });

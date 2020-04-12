@@ -168,7 +168,7 @@ h1.crd {
     padding: .25em .5em;
 }
 .fast-links a:after {
-    content: 'в†“';
+    content: '↓';
     padding-left: .25em;
     opacity: .5;
 }

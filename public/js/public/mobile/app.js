@@ -12443,26 +12443,20 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          directives: [
+      _vm.getCompanyCount() < _vm.companiesList.total
+        ? _c(
+            "div",
             {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.getCompanyCount() < _vm.companiesList.total,
-              expression: "getCompanyCount() < companiesList.total"
-            }
-          ],
-          staticClass: "btn-load-more",
-          on: {
-            click: function($event) {
-              return _vm.getMoreData()
-            }
-          }
-        },
-        [_vm._v("Показать еще")]
-      )
+              staticClass: "btn-load-more",
+              on: {
+                click: function($event) {
+                  return _vm.getMoreData()
+                }
+              }
+            },
+            [_vm._v("Показать еще")]
+          )
+        : _vm._e()
     ],
     2
   )
@@ -26498,7 +26492,7 @@ if (!!document.getElementById("app")) {
   app = new Vue({
     el: "#app",
     data: {
-      host: "http://blizkolom.local",
+      host: location.origin,
       apiVersion: 1
     },
     methods: {
@@ -26524,14 +26518,21 @@ if (!!document.getElementById("app")) {
         method = method.toLowerCase();
 
         if (typeof ctx.$http[method] == "function") {
-          ctx.$http[method](ctx.getApiUrl(apiCode), {
-            headers: headersList,
-            params: paramsList
-          }).then(function (resp) {
+          ctx.$http[method](ctx.getApiUrl(apiCode), ctx.getRequestData(method, headersList, paramsList)).then(function (resp) {
             promiseAction(resp);
           })["catch"](function (error) {
-            alert(error);
+            console.log(error);
           });
+        }
+      },
+      getRequestData: function getRequestData(method, headersList, paramsList) {
+        if (method === 'get') {
+          return {
+            headers: headersList,
+            params: paramsList
+          };
+        } else if (method === 'post') {
+          return paramsList;
         }
       }
     },

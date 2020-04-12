@@ -7,6 +7,7 @@ use App\Models\CompanyPrices;
 use App\Models\CompanyProperty;
 use App\Models\File;
 use App\Models\Property;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -56,6 +57,8 @@ class Pages extends WebPageController
 
         $propsId = array_unique($propsId);
 
+        $companiesByPropCount = $this->getCompanyBeProperty($propsId)->count(['id']);
+
         return view($this->getActualPage('index'), array_merge(
             [
                 "header" => [
@@ -65,18 +68,26 @@ class Pages extends WebPageController
                             "title" => [
                                 "{genetiv}" => $property->genetiv,
                                 "{gdetiv}" => $property->gdetiv,
+                                "{nominativ}" => $property->nominativ,
+                                '{num}' => $companiesByPropCount,
                             ],
                             "description" => [
                                 "{genetiv}" => $property->genetiv,
                                 "{gdetiv}" => $property->gdetiv,
+                                "{nominativ}" => $property->nominativ,
+                                '{num}' => $companiesByPropCount,
                             ],
                             "keywords" => [
                                 "{genetiv}" => $property->genetiv,
                                 "{gdetiv}" => $property->gdetiv,
+                                "{nominativ}" => $property->nominativ,
+                                '{num}' => $companiesByPropCount,
                             ],
                             "h1" => [
                                 "{genetiv}" => $property->genetiv,
                                 "{gdetiv}" => $property->gdetiv,
+                                "{nominativ}" => $property->nominativ,
+                                '{num}' => $companiesByPropCount,
                             ],
                         ]
                     ]),
@@ -97,7 +108,7 @@ class Pages extends WebPageController
                 ])
             ],
             $this->getHeaderData([
-                'menu_url_prefix' => "/" . $propertyCode
+                'replace' => ['{code}' => $propertyCode ? '/' . $propertyCode : ''],
             ]),
             $this->getFooterData()
         ));
@@ -193,6 +204,8 @@ class Pages extends WebPageController
         }
         //end
 
+        $companiesByPropCount = $this->getCompanyBeProperty($propsId)->count(['id']);
+
         return view($this->getActualPage('section'), array_merge(
             [
                 "header" => [
@@ -202,18 +215,26 @@ class Pages extends WebPageController
                             "title" => [
                                 "{genetiv}" => $rootProperty->genetiv,
                                 "{gdetiv}" => $rootProperty->gdetiv,
+                                "{nominativ}" => $rootProperty->nominativ,
+                                '{num}' => $companiesByPropCount,
                             ],
                             "description" => [
                                 "{genetiv}" => $rootProperty->genetiv,
                                 "{gdetiv}" => $rootProperty->gdetiv,
+                                "{nominativ}" => $rootProperty->nominativ,
+                                '{num}' => $companiesByPropCount,
                             ],
                             "keywords" => [
                                 "{genetiv}" => $rootProperty->genetiv,
                                 "{gdetiv}" => $rootProperty->gdetiv,
+                                "{nominativ}" => $rootProperty->nominativ,
+                                '{num}' => $companiesByPropCount,
                             ],
                             "h1" => [
                                 "{genetiv}" => $rootProperty->genetiv,
                                 "{gdetiv}" => $rootProperty->gdetiv,
+                                "{nominativ}" => $rootProperty->nominativ,
+                                '{num}' => $companiesByPropCount,
                             ],
                         ]
                     ]),
@@ -233,7 +254,9 @@ class Pages extends WebPageController
                     ],
                 ])
             ],
-            $this->getHeaderData(),
+            $this->getHeaderData([
+                'replace' => ['{code}' => '/' . $propertyCode],
+            ]),
             $this->getFooterData()
         ));
     }
@@ -349,29 +372,29 @@ class Pages extends WebPageController
                         "replace" => [
                             "title" => [
                                 '{title}' => str_replace(
-                                    ['{genetiv}', '{gdetiv}'],
-                                    [$rootProperty->genetiv, $rootProperty->gdetiv],
+                                    ['{genetiv}', '{gdetiv}', '{nominativ}'],
+                                    [$rootProperty->genetiv, $rootProperty->gdetiv, $rootProperty->nominativ],
                                     $company->title
                                 )
                             ],
                             "description" => [
                                 "{description}" => str_replace(
-                                    ['{genetiv}', '{gdetiv}'],
-                                    [$rootProperty->genetiv, $rootProperty->gdetiv],
+                                    ['{genetiv}', '{gdetiv}', '{nominativ}'],
+                                    [$rootProperty->genetiv, $rootProperty->gdetiv, $rootProperty->nominativ],
                                     $company->description
                                 )
                             ],
                             "keywords" => [
                                 "{keywords}" => str_replace(
-                                    ['{genetiv}', '{gdetiv}'],
-                                    [$rootProperty->genetiv, $rootProperty->gdetiv],
+                                    ['{genetiv}', '{gdetiv}', '{nominativ}'],
+                                    [$rootProperty->genetiv, $rootProperty->gdetiv, $rootProperty->nominativ],
                                     $company->keywords
                                 )
                             ],
                             "h1" => [
                                 "{h1}" => str_replace(
-                                    ['{genetiv}', '{gdetiv}'],
-                                    [$rootProperty->genetiv, $rootProperty->gdetiv],
+                                    ['{genetiv}', '{gdetiv}', '{nominativ}'],
+                                    [$rootProperty->genetiv, $rootProperty->gdetiv, $rootProperty->nominativ],
                                     $company->h1
                                 )
                             ],
@@ -381,7 +404,9 @@ class Pages extends WebPageController
                 'company' => $company,
                 'root_property_title' => $rootProperty->title
             ],
-            $this->getHeaderData(),
+            $this->getHeaderData([
+                'replace' => ['{code}' => '/' . $rootProperty->code],
+            ]),
             $this->getFooterData()
         ));
     }
@@ -410,7 +435,9 @@ class Pages extends WebPageController
                 'root_property_title' => $property->title,
                 'property_id' => [$property->id]
             ],
-            $this->getHeaderData(),
+            $this->getHeaderData([
+                'replace' => ['{code}' => '/' . $property->code],
+            ]),
             $this->getFooterData()
         ));
     }
@@ -439,7 +466,9 @@ class Pages extends WebPageController
                 'root_property_title' => $property->title,
                 'property_id' => [$property->id]
             ],
-            $this->getHeaderData(),
+            $this->getHeaderData([
+                'replace' => ['{code}' => '/' . $property->code],
+            ]),
             $this->getFooterData()
         ));
     }
@@ -499,5 +528,20 @@ class Pages extends WebPageController
         }
 
         return explode('or', str_replace('-or-', 'or', $code));
+    }
+
+    /**
+     * @param array $ids
+     * @return Builder
+     */
+    protected function getCompanyBeProperty(array $ids = []): Builder
+    {
+        $result = CompanyProperty::query();
+
+        if (count($ids) > 0) {
+            $result->whereIn('property_id', $ids);
+        }
+
+        return $result;
     }
 }

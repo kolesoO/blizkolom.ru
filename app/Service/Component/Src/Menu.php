@@ -11,7 +11,7 @@ class Menu extends Base
      */
     public function prepareParams(array $arParams): array
     {
-        $arParams['menu_url_prefix'] = $arParams['menu_url_prefix'] == '/' ? '' : $arParams['menu_url_prefix'];
+        $arParams['replace'] = $arParams['replace'] ?? [];
 
         return parent::prepareParams($arParams);
     }
@@ -34,7 +34,11 @@ class Menu extends Base
                 $arData["items"] = json_decode($arData["content"], true);
                 if (is_array($arData["items"])) {
                     foreach ($arData["items"] as &$item) {
-                        $item['link'] = $this->arParams['menu_url_prefix'] . $item['link'];
+                        $item['link'] = str_replace(
+                            array_keys($this->arParams["replace"]),
+                            array_values($this->arParams["replace"]),
+                            $item['link']
+                        );
                     }
                     unset($item);
                 }

@@ -276,8 +276,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "v-company-list",
   data: function data() {
@@ -12444,26 +12442,22 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.getCompanyCount() < _vm.companiesList.total,
-              expression: "getCompanyCount() < companiesList.total"
-            }
-          ],
-          staticClass: "button",
-          on: {
-            click: function($event) {
-              return _vm.getMoreData()
-            }
-          }
-        },
-        [_c("span", [_vm._v("Показать еще")])]
-      )
+      _vm.getCompanyCount() < _vm.companiesList.total
+        ? _c("div", { staticStyle: { "text-align": "center" } }, [
+            _c(
+              "button",
+              {
+                staticClass: "button",
+                on: {
+                  click: function($event) {
+                    return _vm.getMoreData()
+                  }
+                }
+              },
+              [_c("span", [_vm._v("Показать еще")])]
+            )
+          ])
+        : _vm._e()
     ],
     2
   )

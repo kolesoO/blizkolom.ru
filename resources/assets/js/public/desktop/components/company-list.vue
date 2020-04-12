@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p v-show="isEmptyCompanies()">Компании не найдены</p>
+        <p v-if="isEmptyCompanies()">Компании не найдены</p>
         <div
                 v-for="company in companiesList.list"
                 :id="company.id_formatted"
@@ -76,13 +76,11 @@
                 </table>
             </div>
         </div>
-        <button
-                class="button"
-                v-show="getCompanyCount() < companiesList.total"
-                @click="getMoreData()"
-        >
-            <span>Показать еще</span>
-        </button>
+        <div style="text-align:center" v-if="getCompanyCount() < companiesList.total">
+            <button class="button" @click="getMoreData()">
+                <span>Показать еще</span>
+            </button>
+        </div>
     </div>
 </template>
 

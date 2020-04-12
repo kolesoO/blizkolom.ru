@@ -2,7 +2,7 @@
     <div>
         <div
                 class="block"
-                v-show="isEmptyCompanies()"
+                v-if="isEmptyCompanies()"
         >Компании не найдены</div>
         <div
                 v-for="company in companiesList.list"
@@ -83,7 +83,7 @@
         </div>
         <div
                 class="btn-load-more"
-                v-show="getCompanyCount() < companiesList.total"
+                v-if="getCompanyCount() < companiesList.total"
                 @click="getMoreData()"
         >Показать еще</div>
     </div>

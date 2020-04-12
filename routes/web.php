@@ -6,10 +6,8 @@ use Illuminate\Routing\Router;
 /* @var Router $router */
 
 $router->get("/kak-sdat", "Pages@how");
-$router->get("/{propertyCode}/kak-sdat", "Pages@how");
 
 $router->get("/netochnost", "Pages@netochnost");
-$router->get("/{propertyCode}/netochnost", "Pages@netochnost");
 
 //prices
 //$router->get("/ceny", "Pages@prices");
