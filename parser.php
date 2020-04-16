@@ -302,6 +302,11 @@ foreach ($matches as $match) {
         echo 'Load company logo' . PHP_EOL;
         $filePath = $parser->getImage();
         if (strlen($filePath) > 0) {
+            try {
+                $logoContent = file_get_contents($filePath);
+            } catch (Throwable $exception) {
+                $logoContent = false;
+            }
             if ($logoContent = file_get_contents($filePath)) {
                 $localPath = '/img' . $imgDir. '/' . basename($filePath);
                 echo 'Save company logo' . PHP_EOL;
