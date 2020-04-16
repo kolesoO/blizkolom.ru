@@ -305,6 +305,9 @@ foreach ($matches as $match) {
             if ($logoContent = file_get_contents($filePath)) {
                 $localPath = '/img' . $imgDir. '/' . basename($filePath);
                 echo 'Save company logo' . PHP_EOL;
+                if (!is_dir($staticServerPath . '/img' . $imgDir)) {
+                    mkdir($staticServerPath . '/img' . $imgDir);
+                }
                 file_put_contents($staticServerPath . $localPath, $logoContent);
                 $fileInstance = File::query()
                     ->firstOrCreate([
