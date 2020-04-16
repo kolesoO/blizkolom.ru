@@ -116,10 +116,7 @@ class CompanyList extends Base
                     ->each(function (Company $item) use ($priceProps) {
                         $item->pageUrl = route(
                             'company-detail',
-                            [
-                                'propertyCode' => $this->arParams['property_code'],
-                                'companyCode' => $item->code,
-                            ],
+                            ['companyCode' => $item->code],
                             false
                         );
 

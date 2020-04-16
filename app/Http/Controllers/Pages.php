@@ -262,15 +262,14 @@ class Pages extends WebPageController
     }
 
     /**
-     * @param string|null $propertyCode
      * @param string $companyCode
      * @return View
      */
-    public function company(?string $propertyCode, string $companyCode): View
+    public function company(string $companyCode): View
     {
         $rootProperty = Property::query()
             ->where([
-                ['code', $propertyCode],
+                ['code', null],
                 ['urlable', 1],
                 ['root_url', 1]
             ])

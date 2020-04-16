@@ -25,8 +25,8 @@
                         <a href="{{ $item->pageUrl }}">{{ $item->name }}</a>
                     </div>
                     <div class="adr">{{ $item->contacts }}</div>
-                    <div class="coord">{{ $item->map_coords_str }}</div>
-                    <div class="serv">Лицензия, Физлица, Юрлица, Вывоз, Демонтаж</div>
+                    <div class="coord">{{ $item->map_coords }}</div>
+                    <div class="serv">{{ implode(', ', $item->options->pluck('value')->toArray()) }}</div>
                     <div class="phone">
                         <span>{{ $item->phone }}</span>
                         <div class="btn-callback" data-company_name="{{ $item->name }}">обратный звонок</div>
@@ -35,7 +35,7 @@
                     <div class="site">{{ $item->url }}</div>
                     @if ($item->openTime['state'] === 'from')
                         <div class="clock @if ($item->openTime['status']) green @else red @endif ">открыто с {{ $item->openTime['time'] }}</div>
-                    @else
+                    @elseif ($item->openTime['state'] === 'to')
                         <div class="clock @if ($item->openTime['status']) green @else red @endif ">открыто до {{ $item->openTime['time'] }}</div>
                     @endif
                     @if (count($item->prices) > 0)

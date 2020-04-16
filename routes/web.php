@@ -26,7 +26,7 @@ $router->get('{propertyCode}/filter/{filteredPropCode}', 'Pages@index');
 
 //company
 $router->get(
-    '/{propertyCode}/priem/{companyCode}',
+    '/priem/{companyCode}',
     [
         'as' => 'company-detail',
         'uses' => 'Pages@company'

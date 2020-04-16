@@ -19,7 +19,7 @@
         <div class="adr">{{ $company->contacts }}</div>
         <div class="coord">{{ $company->map_coords }}</div>
         <div class="serv">Лицензия, Физлица, Юрлица, Вывоз, Демонтаж</div>
-        <div class="about">{{ $company->detail_text }}</div>
+        <div class="about">{!! $company->detail_text !!}</div>
         <div class="phone">
             <span>{{ $company->phone }}</span>
             <div class="btn-callback" data-company_name="{{ $company->name }}">
@@ -30,7 +30,7 @@
         <div class="site">{{ $company->url }}</div>
         @if ($company->openTime['state'] === 'from')
             <div class="clock @if ($company->openTime['status']) green @else red @endif ">открыто с {{ $company->openTime['time'] }}</div>
-        @else
+        @elseif ($company->openTime['state'] === 'to')
             <div class="clock @if ($company->openTime['status']) green @else red @endif ">открыто до {{ $company->openTime['time'] }}</div>
         @endif
         @if (count($company->prices) > 0)

@@ -32,7 +32,7 @@
                 </div>
                 <div class="adr">{{ company.contacts }}</div>
                 <div class="coord">{{ company.map_coords_str }}</div>
-                <div class="serv">Лицензия, Физлица, Юрлица, Вывоз, Демонтаж</div>
+                <div class="serv">{{ company.options }}</div>
                 <div class="phone">
                     <span>{{ company.phone }}</span>
                     <div
@@ -49,7 +49,7 @@
                         :class="['clock', company.openTime['status'] ? 'green' : 'red']"
                 >открыто с {{ company.openTime['time'] }}</div>
                 <div
-                        v-else
+                        v-if="company.openTime['state'] === 'to'"
                         :class="['clock', company.openTime['status'] ? 'green' : 'red']"
                 >открыто до {{ company.openTime['time'] }}</div>
                 <div class="price" v-if="company.prices.length > 0">

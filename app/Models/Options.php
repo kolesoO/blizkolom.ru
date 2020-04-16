@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
-class CompanyProperty extends Base
+/**
+ * Class File
+ *
+ * @property    string  $id
+ * @property    string  $value
+ */
+class Options extends Base
 {
-    /** @var bool */
-    public $timestamps = false;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'company_id', 'property_id',
+        'value'
     ];
 
     /**
@@ -31,5 +34,5 @@ class CompanyProperty extends Base
     /**
      * @var string
      */
-    protected $table = "company_properties";
+    protected $table = "options";
 }

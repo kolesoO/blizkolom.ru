@@ -84,12 +84,10 @@ class CompanyController extends Controller
                 $item->map_coords = explode(',', $item->map_coords);
                 $item->page_url = route(
                     'company-detail',
-                    [
-                        'propertyCode' => $propertyCode,
-                        'companyCode' => $item->code
-                    ],
+                    ['companyCode' => $item->code],
                     false
                 );
+                $item->options = implode(', ', $item->options()->pluck('value')->toArray());
 
                 //picture
                 if ($fileInfo = File::query()->find($item->preview_picture)) {

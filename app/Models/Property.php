@@ -9,7 +9,10 @@ class Property extends Base
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'title', 'parent_id', 'filtered', 'urlable',
+        'root_url', 'code', 'popular', 'genetiv', 'gdetiv', 'nominativ',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
