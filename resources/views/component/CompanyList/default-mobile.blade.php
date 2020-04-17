@@ -29,16 +29,24 @@
                         <br>
                         <span class="map-load"> на карте</span>
                     </div>
-                    <div class="coord">{{ $item->map_coords_str }}</div>
+                    @if ($item->map_coords)
+                        <div class="coord">{{ $item->map_coords_str }}</div>
+                    @endif
                     <div class="serv">{{ implode(', ', $item->options->pluck('value')->toArray()) }}</div>
-                    <div class="phone">
-                        <span>{{ $item->phone }}</span>
-                        <div class="btn-callback" data-company_name="{{ $item->name }}">
-                            <img src="/images/callback-gray.svg">
+                    @if ($item->phone)
+                        <div class="phone">
+                            <span>{{ $item->phone }}</span>
+                            <div class="btn-callback" data-company_name="{{ $item->name }}">
+                                <img src="/images/callback-gray.svg">
+                            </div>
                         </div>
-                    </div>
-                    <div class="mail">{{ $item->email }}</div>
-                    <div class="site">{{ $item->url }}</div>
+                    @endif
+                    @if ($item->email)
+                        <div class="mail">{{ $item->email }}</div>
+                    @endif
+                    @if ($item->url)
+                        <div class="site">{{ $item->url }}</div>
+                    @endif
                     @if ($item->openTime['state'] === 'from')
                         <div class="clock @if ($item->openTime['status']) green @else red @endif ">открыто с {{ $item->openTime['time'] }}</div>
                     @elseif ($item->openTime['state'] === 'to')

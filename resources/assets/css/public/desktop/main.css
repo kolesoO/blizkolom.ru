@@ -492,6 +492,9 @@ h1 {
 .card.big {
     padding-top: .5em;
 }
+.card.big .about {
+    margin-bottom: 1.5em;
+}
 .price-table tr.title {
     background: #d4d2d2;
 }

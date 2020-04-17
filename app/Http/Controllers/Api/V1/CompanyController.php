@@ -19,7 +19,6 @@ class CompanyController extends Controller
 
     public function index(Request $request): array
     {
-        $propertyCode = '';
         $builder = Company::query()
             ->where('active', $request->get('active', 1))
             ->offset($request->get('offset', 0));
@@ -34,7 +33,6 @@ class CompanyController extends Controller
                     ['root_url', 1]
                 ])
                 ->firstOrFail(['id', 'code']);
-            $propertyCode = $rootProp->code;
             //end
 
             $actualPropIds = array_diff(
@@ -79,7 +77,7 @@ class CompanyController extends Controller
         $resultCollection = $builder
             ->limit($request->get('limit', 10))
             ->get()
-            ->each(function(Company $item) use ($propertyCode) {
+            ->each(function(Company $item) {
                 $item->map_coords_str = $item->map_coords;
                 $item->map_coords = explode(',', $item->map_coords);
                 $item->page_url = route(

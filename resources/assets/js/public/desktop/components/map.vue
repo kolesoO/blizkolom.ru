@@ -30,12 +30,12 @@
                     return null;
                 }
 
-                let openCloseInfo;
+                let openCloseInfo = '';
 
-                if (item.openTime['state'] === 'from') {
-                    openCloseInfo = ' <span class="' + (item.openTime['status'] ? 'green' : 'red') + '">открыто с ' + item.openTime['time'] + '</span>';
-                } else {
-                    openCloseInfo = ' <span class="' + (item.openTime['status'] ? 'green' : 'red') + '">открыто до ' + item.openTime['time'] + '</span>';
+                if (item.openTime.state === 'from') {
+                    openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто с ' + item.openTime.time + '</span>';
+                } else if (item.openTime.state === 'to') {
+                    openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто до ' + item.openTime.time + '</span>';
                 }
 
                 return new window.ymaps.Placemark(

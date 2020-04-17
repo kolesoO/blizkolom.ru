@@ -307,7 +307,7 @@ foreach ($matches as $match) {
             } catch (Throwable $exception) {
                 $logoContent = false;
             }
-            if ($logoContent = file_get_contents($filePath)) {
+            if ($logoContent) {
                 $localPath = '/img' . $imgDir. '/' . basename($filePath);
                 echo 'Save company logo' . PHP_EOL;
                 if (!is_dir($staticServerPath . '/img' . $imgDir)) {

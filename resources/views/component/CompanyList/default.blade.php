@@ -25,14 +25,22 @@
                         <a href="{{ $item->pageUrl }}">{{ $item->name }}</a>
                     </div>
                     <div class="adr">{{ $item->contacts }}</div>
-                    <div class="coord">{{ $item->map_coords }}</div>
+                    @if ($item->map_coords)
+                        <div class="coord">{{ $item->map_coords }}</div>
+                    @endif
                     <div class="serv">{{ implode(', ', $item->options->pluck('value')->toArray()) }}</div>
-                    <div class="phone">
-                        <span>{{ $item->phone }}</span>
-                        <div class="btn-callback" data-company_name="{{ $item->name }}">обратный звонок</div>
-                    </div>
-                    <div class="mail">{{ $item->email }}</div>
-                    <div class="site">{{ $item->url }}</div>
+                    @if ($item->phone)
+                        <div class="phone">
+                            <span>{{ $item->phone }}</span>
+                            <div class="btn-callback" data-company_name="{{ $item->name }}">обратный звонок</div>
+                        </div>
+                    @endif
+                    @if ($item->email)
+                        <div class="mail">{{ $item->email }}</div>
+                    @endif
+                    @if ($item->url)
+                        <div class="site">{{ $item->url }}</div>
+                    @endif
                     @if ($item->openTime['state'] === 'from')
                         <div class="clock @if ($item->openTime['status']) green @else red @endif ">открыто с {{ $item->openTime['time'] }}</div>
                     @elseif ($item->openTime['state'] === 'to')

@@ -276,6 +276,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "v-company-list",
   data: function data() {
@@ -863,12 +866,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return null;
       }
 
-      var openCloseInfo;
+      var openCloseInfo = '';
 
-      if (item.openTime['state'] === 'from') {
-        openCloseInfo = ' <span class="' + (item.openTime['status'] ? 'green' : 'red') + '">открыто с ' + item.openTime['time'] + '</span>';
-      } else {
-        openCloseInfo = ' <span class="' + (item.openTime['status'] ? 'green' : 'red') + '">открыто до ' + item.openTime['time'] + '</span>';
+      if (item.openTime.state === 'from') {
+        openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто с ' + item.openTime.time + '</span>';
+      } else if (item.openTime.state === 'to') {
+        openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто до ' + item.openTime.time + '</span>';
       }
 
       return new window.ymaps.Placemark(item.map_coords, {
@@ -12277,20 +12280,9 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "p",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.isEmptyCompanies(),
-              expression: "isEmptyCompanies()"
-            }
-          ]
-        },
-        [_vm._v("Компании не найдены")]
-      ),
+      _vm.isEmptyCompanies()
+        ? _c("p", [_vm._v("Компании не найдены")])
+        : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.companiesList.list, function(company) {
         return _c(
@@ -12330,58 +12322,76 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "adr" }, [
-                _vm._v(_vm._s(company.contacts))
-              ]),
+              company.contacts
+                ? _c("div", { staticClass: "adr" }, [
+                    _vm._v(_vm._s(company.contacts))
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "coord" }, [
-                _vm._v(_vm._s(company.map_coords_str))
-              ]),
+              company.map_coords_str
+                ? _c("div", { staticClass: "coord" }, [
+                    _vm._v(_vm._s(company.map_coords_str))
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "serv" }, [
-                _vm._v("Лицензия, Физлица, Юрлица, Вывоз, Демонтаж")
-              ]),
+              company.options.length > 0
+                ? _c("div", { staticClass: "serv" }, [
+                    _vm._v(_vm._s(company.options))
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "phone" }, [
-                _c("span", [_vm._v(_vm._s(company.phone))]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "btn-callback",
-                    attrs: { "data-company_name": company.name }
-                  },
-                  [_vm._v("обратный звонок")]
-                )
-              ]),
+              company.phone
+                ? _c("div", { staticClass: "phone" }, [
+                    _c("span", [_vm._v(_vm._s(company.phone))]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "btn-callback",
+                        attrs: { "data-company_name": company.name }
+                      },
+                      [_vm._v("обратный звонок")]
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "mail" }, [
-                _vm._v(_vm._s(company.email))
-              ]),
+              company.email
+                ? _c("div", { staticClass: "mail" }, [
+                    _vm._v(_vm._s(company.email))
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "site" }, [_vm._v(_vm._s(company.url))]),
+              company.url
+                ? _c("div", { staticClass: "site" }, [
+                    _vm._v(_vm._s(company.url))
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              company.openTime["state"] === "from"
+              company.openTime.state === "from"
                 ? _c(
                     "div",
                     {
                       class: [
                         "clock",
-                        company.openTime["status"] ? "green" : "red"
+                        company.openTime.status ? "green" : "red"
                       ]
                     },
-                    [_vm._v("открыто с " + _vm._s(company.openTime["time"]))]
+                    [_vm._v("открыто с " + _vm._s(company.openTime.time))]
                   )
-                : _c(
+                : _vm._e(),
+              _vm._v(" "),
+              company.openTime.state === "to"
+                ? _c(
                     "div",
                     {
                       class: [
                         "clock",
-                        company.openTime["status"] ? "green" : "red"
+                        company.openTime.status ? "green" : "red"
                       ]
                     },
-                    [_vm._v("открыто до " + _vm._s(company.openTime["time"]))]
-                  ),
+                    [_vm._v("открыто до " + _vm._s(company.openTime.time))]
+                  )
+                : _vm._e(),
               _vm._v(" "),
               company.prices.length > 0
                 ? _c(

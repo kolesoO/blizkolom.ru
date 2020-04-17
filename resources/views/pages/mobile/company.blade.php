@@ -16,18 +16,28 @@
             @endif
             <div class="rating {{ $company->rating['info'] }}">{{ $company->rating['rating'] }}</div>
         </div>
-        <div class="adr">{{ $company->contacts }}</div>
-        <div class="coord">{{ $company->map_coords }}</div>
-        <div class="serv">Лицензия, Физлица, Юрлица, Вывоз, Демонтаж</div>
+        @if ($company->contacts)
+            <div class="adr">{{ $company->contacts }}</div>
+        @endif
+        @if ($company->map_coords)
+            <div class="coord">{{ $company->map_coords }}</div>
+        @endif
+        <div class="serv">{{ implode(', ', $company->options()->pluck('value')->toArray()) }}</div>
         <div class="about">{!! $company->detail_text !!}</div>
-        <div class="phone">
-            <span>{{ $company->phone }}</span>
-            <div class="btn-callback" data-company_name="{{ $company->name }}">
-                <img src="/images/callback-gray.svg">
+        @if ($company->phone)
+            <div class="phone">
+                <span>{{ $company->phone }}</span>
+                <div class="btn-callback" data-company_name="{{ $company->name }}">
+                    <img src="/images/callback-gray.svg">
+                </div>
             </div>
-        </div>
-        <div class="mail">{{ $company->email }}</div>
-        <div class="site">{{ $company->url }}</div>
+        @endif
+        @if ($company->email)
+            <div class="mail">{{ $company->email }}</div>
+        @endif
+        @if ($company->url)
+            <div class="site">{{ $company->url }}</div>
+        @endif
         @if ($company->openTime['state'] === 'from')
             <div class="clock @if ($company->openTime['status']) green @else red @endif ">открыто с {{ $company->openTime['time'] }}</div>
         @elseif ($company->openTime['state'] === 'to')

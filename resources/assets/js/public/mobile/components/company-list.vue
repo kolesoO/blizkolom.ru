@@ -30,10 +30,10 @@
                 <div class="name">
                     <a :href="company.page_url">{{ company.name }}</a>
                 </div>
-                <div class="adr">{{ company.contacts }}</div>
-                <div class="coord">{{ company.map_coords_str }}</div>
-                <div class="serv">{{ company.options }}</div>
-                <div class="phone">
+                <div v-if="company.contacts" class="adr">{{ company.contacts }}</div>
+                <div v-if="company.map_coords_str" class="coord">{{ company.map_coords_str }}</div>
+                <div v-if="company.options.length > 0" class="serv">{{ company.options }}</div>
+                <div v-if="company.phone" class="phone">
                     <span>{{ company.phone }}</span>
                     <div
                             class="btn-callback"
@@ -42,16 +42,16 @@
                         <img src="/images/callback-gray.svg">
                     </div>
                 </div>
-                <div class="mail">{{ company.email }}</div>
-                <div class="site">{{ company.url }}</div>
+                <div v-if="company.email" class="mail">{{ company.email }}</div>
+                <div v-if="company.url" class="site">{{ company.url }}</div>
                 <div
-                        v-if="company.openTime['state'] === 'from'"
-                        :class="['clock', company.openTime['status'] ? 'green' : 'red']"
-                >открыто с {{ company.openTime['time'] }}</div>
+                        v-if="company.openTime.state === 'from'"
+                        :class="['clock', company.openTime.status ? 'green' : 'red']"
+                >открыто с {{ company.openTime.time }}</div>
                 <div
-                        v-if="company.openTime['state'] === 'to'"
-                        :class="['clock', company.openTime['status'] ? 'green' : 'red']"
-                >открыто до {{ company.openTime['time'] }}</div>
+                        v-if="company.openTime.state === 'to'"
+                        :class="['clock', company.openTime.status ? 'green' : 'red']"
+                >открыто до {{ company.openTime.time }}</div>
                 <div class="price" v-if="company.prices.length > 0">
                     <span
                             v-for="(priceInfo, key) in company.prices"
