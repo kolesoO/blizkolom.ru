@@ -15,6 +15,10 @@
     width: 100%;
     margin-bottom: 1em;
 }
+.card.big .about {
+    float: left;
+    margin-bottom: 1em;
+}
 .card .image .rating {
     position: absolute;
     top: .5em;

@@ -1,6 +1,6 @@
 <html lang="ru">
 <head>
-    <title>Страница не найдена</title>
+    <title>Ошибка - страница не найдена</title>
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="description" content="" />

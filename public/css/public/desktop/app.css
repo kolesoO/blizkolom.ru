@@ -302,6 +302,8 @@ h1 {
     border-bottom: 1px solid #d4d2d2;
     margin-bottom: 1.5em;
     padding-bottom: 1.5em;
+    float: left;
+    width: 100%;
 }
 .card img {
     width: 180px;
