@@ -281,6 +281,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "v-company-list",
   data: function data() {
@@ -863,6 +867,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто с ' + item.openTime.time + '</span>';
       } else if (item.openTime.state === 'to') {
         openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто до ' + item.openTime.time + '</span>';
+      } else if (item.openTime.state === 'full') {
+        openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто ' + item.openTime.time + '</span>';
       }
 
       return new window.ymaps.Placemark(item.map_coords, {
@@ -12391,6 +12397,19 @@ var render = function() {
                       ]
                     },
                     [_vm._v("открыто до " + _vm._s(company.openTime.time))]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              company.openTime.state === "full"
+                ? _c(
+                    "div",
+                    {
+                      class: [
+                        "clock",
+                        company.openTime.status ? "green" : "red"
+                      ]
+                    },
+                    [_vm._v("открыто " + _vm._s(company.openTime.time))]
                   )
                 : _vm._e(),
               _vm._v(" "),

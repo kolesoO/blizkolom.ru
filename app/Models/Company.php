@@ -58,6 +58,14 @@ class Company extends Base
             ];
         }
 
+        if ($this->open_from === '00:00:00' && $this->open_to === '23:59:59') {
+            return [
+                'status' => true,
+                'time' => 'круглосуточно',
+                'state' => 'full'
+            ];
+        }
+
         if (strtotime($this->open_from) > $time) {
             return [
                 'status' => false,

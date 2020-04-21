@@ -51,6 +51,8 @@
                         <div class="clock @if ($item->openTime['status']) green @else red @endif ">открыто с {{ $item->openTime['time'] }}</div>
                     @elseif ($item->openTime['state'] === 'to')
                         <div class="clock @if ($item->openTime['status']) green @else red @endif ">открыто до {{ $item->openTime['time'] }}</div>
+                    @elseif ($item->openTime['state'] === 'full')
+                        <div class="clock @if ($item->openTime['status']) green @else red @endif ">открыто {{ $item->openTime['time'] }}</div>
                     @endif
                     @if (count($item->prices) > 0)
                         <div class="price">

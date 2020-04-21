@@ -9,6 +9,7 @@ use App\Models\File;
 use App\Models\News;
 use App\Models\Property;
 use App\Service\Helpers\BuilderHelper;
+use Carbon\Carbon;
 
 class CompanyList extends Base
 {
@@ -44,6 +45,26 @@ class CompanyList extends Base
             [$rootProp->id]
         );
 
+        //fix
+        $builderFilter = [];
+        if (in_array(2, $actualPropIds) && in_array(3, $actualPropIds)) {
+            $builderFilter[] = ['open_from', '<=', Carbon::now()->format('H:i:s')];
+            $builderFilter[] = ['open_to', '>=', Carbon::now()->format('H:i:s')];
+            unset($actualPropIds[array_search(2, $actualPropIds)]);
+            unset($actualPropIds[array_search(3, $actualPropIds)]);
+        } elseif (in_array(2, $actualPropIds)) { //Работает сейчас
+            $builderFilter[] = ['open_from', '<=', Carbon::now()->format('H:i:s')];
+            $builderFilter[] = ['open_to', '>=', Carbon::now()->format('H:i:s')];
+            unset($actualPropIds[array_search(2, $actualPropIds)]);
+        } elseif (in_array(3, $actualPropIds)) { //Работает 24/7
+            $builderFilter[] = ['open_from', '00:00:00'];
+            $builderFilter[] = ['open_to', '23:59:59'];
+            unset($actualPropIds[array_search(3, $actualPropIds)]);
+        }
+        //end
+
+        $actualPropIds = array_values($actualPropIds);
+
         $byRootPropsCollection = CompanyProperty::query()
             ->where('property_id', $rootProp->id)
             ->get(['id', 'company_id']);
@@ -73,7 +94,10 @@ class CompanyList extends Base
         }
         //end
 
-        return $companyIds;
+        return [
+            'companyIds' => $companyIds,
+            'builderFilter' => $builderFilter,
+        ];
     }
 
     /**
@@ -86,7 +110,9 @@ class CompanyList extends Base
                 ->where('active', 1);
 
             if (isset($this->arParams["filter"]['property_id'])) {
-                $totalBuilder->whereIn('id', $this->getPropertyIds($this->arParams["filter"]['property_id']));
+                $data = $this->getPropertyIds($this->arParams["filter"]['property_id']);
+                $totalBuilder->whereIn('id', $data['companyIds']);
+                $totalBuilder->where($data['builderFilter']);
             }
 
             //prices

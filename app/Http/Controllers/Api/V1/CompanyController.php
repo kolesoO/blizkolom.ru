@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\CompanyPrices;
 use App\Models\File;
+use Carbon\Carbon;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -19,8 +20,10 @@ class CompanyController extends Controller
 
     public function index(Request $request): array
     {
+        $builderFilter = [
+            ['active', $request->get('active', 1)],
+        ];
         $builder = Company::query()
-            ->where('active', $request->get('active', 1))
             ->offset($request->get('offset', 0));
 
         if ($request->get('property_id', false)) {
@@ -39,6 +42,25 @@ class CompanyController extends Controller
                 $request->get('property_id', []),
                 [$rootProp->id]
             );
+
+            //fix
+            if (in_array(2, $actualPropIds) && in_array(3, $actualPropIds)) {
+                $builderFilter[] = ['open_from', '<=', Carbon::now()->format('H:i:s')];
+                $builderFilter[] = ['open_to', '>=', Carbon::now()->format('H:i:s')];
+                unset($actualPropIds[array_search(2, $actualPropIds)]);
+                unset($actualPropIds[array_search(3, $actualPropIds)]);
+            } elseif (in_array(2, $actualPropIds)) { //Работает сейчас
+                $builderFilter[] = ['open_from', '<=', Carbon::now()->format('H:i:s')];
+                $builderFilter[] = ['open_to', '>=', Carbon::now()->format('H:i:s')];
+                unset($actualPropIds[array_search(2, $actualPropIds)]);
+            } elseif (in_array(3, $actualPropIds)) { //Работает 24/7
+                $builderFilter[] = ['open_from', '00:00:00'];
+                $builderFilter[] = ['open_to', '23:59:59'];
+                unset($actualPropIds[array_search(3, $actualPropIds)]);
+            }
+            //end
+
+            $actualPropIds = array_values($actualPropIds);
 
             $byRootPropsCollection = CompanyProperty::query()
                 ->where('property_id', $rootProp->id)
@@ -73,6 +95,8 @@ class CompanyController extends Controller
         }
 
         $totalBuilder = $builder;
+
+        $builder->where($builderFilter);
 
         $resultCollection = $builder
             ->limit($request->get('limit', 10))

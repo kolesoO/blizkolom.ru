@@ -52,6 +52,10 @@
                         v-if="company.openTime.state === 'to'"
                         :class="['clock', company.openTime.status ? 'green' : 'red']"
                 >открыто до {{ company.openTime.time }}</div>
+                <div
+                        v-if="company.openTime.state === 'full'"
+                        :class="['clock', company.openTime.status ? 'green' : 'red']"
+                >открыто {{ company.openTime.time }}</div>
                 <div class="price" v-if="company.prices.length > 0">
                     <span
                             v-for="(priceInfo, key) in company.prices"

@@ -42,6 +42,8 @@
             <div class="clock @if ($company->openTime['status']) green @else red @endif ">открыто с {{ $company->openTime['time'] }}</div>
         @elseif ($company->openTime['state'] === 'to')
             <div class="clock @if ($company->openTime['status']) green @else red @endif ">открыто до {{ $company->openTime['time'] }}</div>
+        @elseif ($company->openTime['state'] === 'full')
+            <div class="clock @if ($company->openTime['status']) green @else red @endif ">открыто {{ $company->openTime['time'] }}</div>
         @endif
         @if (count($company->prices) > 0)
             <div class="price" id="price">

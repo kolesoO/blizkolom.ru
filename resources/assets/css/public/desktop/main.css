@@ -280,6 +280,7 @@ h1 {
     border-style: solid;
     padding: 1em;
     float: left;
+    background-color: #fafafa;
 }
 .promo-map span {
     float: left;
@@ -302,8 +303,10 @@ h1 {
     border-bottom: 1px solid #d4d2d2;
     margin-bottom: 1.5em;
     padding-bottom: 1.5em;
-    float: left;
     width: 100%;
+}
+.card:not(.big){
+    float: left;
 }
 .card img {
     width: 180px;

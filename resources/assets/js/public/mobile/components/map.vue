@@ -25,6 +25,8 @@
                     openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто с ' + item.openTime.time + '</span>';
                 } else if (item.openTime.state === 'to') {
                     openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто до ' + item.openTime.time + '</span>';
+                } else if (item.openTime.state === 'full') {
+                    openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто ' + item.openTime.time + '</span>';
                 }
 
                 return new window.ymaps.Placemark(

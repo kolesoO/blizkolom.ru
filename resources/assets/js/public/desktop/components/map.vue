@@ -8,7 +8,7 @@
         <div class="promo-map">
             <span class="title">Не можете найти свой пункт приема?</span>
             <span>Добавьте его сами, это бесплатно!</span>
-            <div class="btn">Добавить компанию</div>
+            <!--div class="btn">Добавить компанию</div-->
         </div>
     </div>
 </template>
@@ -36,6 +36,8 @@
                     openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто с ' + item.openTime.time + '</span>';
                 } else if (item.openTime.state === 'to') {
                     openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто до ' + item.openTime.time + '</span>';
+                } else if (item.openTime.state === 'full') {
+                    openCloseInfo = ' <span class="' + (item.openTime.status ? 'green' : 'red') + '">открыто ' + item.openTime.time + '</span>';
                 }
 
                 return new window.ymaps.Placemark(
