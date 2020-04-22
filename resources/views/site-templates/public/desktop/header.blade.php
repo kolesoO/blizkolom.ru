@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <form method="post" class="search-site">
-                    <input type="search" name="q" placeholder="Поиск среди 121 пункта сдачи металлолома">
+                    <input type="search" name="q" placeholder="Поиск среди {{ $header["company_count"]['count'] }} пункт{{ $header["company_count"]['suffix'] }} сдачи металлолома">
                     <input type="submit" class="header-search-btn" value="">
                 </form>
                 <div class="region-wrapper">

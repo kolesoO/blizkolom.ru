@@ -10,13 +10,16 @@ html, body {
     vertical-align: baseline;
     font-family: Verdana, sans-serif;
     font-size: 13px;
-    background: #fafafa;
+    background-color: #1f1f1f;
 }
 header {
     background: linear-gradient(45deg, #2948ff, #396afc);
     width: 100%;
     float: left;
     padding: 10px 0;
+}
+#app{
+    background-color: #fafafa;
 }
 .content-head, .ftr-content, h1, #filters, #listing, .card.big, .fast-links, #rev, .fast-table, #table-container, #page-404, .form, .how-to {
     max-width: 960px;
@@ -659,6 +662,11 @@ thead tr {
 }
 .content-head {
     position: relative;
+}
+.clear:after{
+    content: '';
+    display: table;
+    clear: both;
 }
 
 /* how-to page */

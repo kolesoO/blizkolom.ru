@@ -91,6 +91,10 @@ class Pages extends WebPageController
                             ],
                         ]
                     ]),
+                    'company_count' => [
+                        'count' => $companiesByPropCount,
+                        'suffix' => GetDeclNum($companiesByPropCount)
+                    ],
                 ],
                 'root_property_title' => $property->title,
                 'property_id' => $propsId,
@@ -238,6 +242,10 @@ class Pages extends WebPageController
                             ],
                         ]
                     ]),
+                    'company_count' => [
+                        'count' => $companiesByPropCount,
+                        'suffix' => GetDeclNum($companiesByPropCount)
+                    ],
                 ],
                 'property_id' => $propsId,
                 'root_property_title' => $rootProperty->title,
@@ -363,6 +371,8 @@ class Pages extends WebPageController
 
         $company->rating = $company->getRating();
 
+        $companiesByPropCount = $this->getCompanyBeProperty([$rootProperty->id])->count(['id']);
+
         return view($this->getActualPage('company'), array_merge(
             [
                 "header" => [
@@ -399,6 +409,10 @@ class Pages extends WebPageController
                             ],
                         ],
                     ]),
+                    'company_count' => [
+                        'count' => $companiesByPropCount,
+                        'suffix' => GetDeclNum($companiesByPropCount)
+                    ],
                 ],
                 'company' => $company,
                 'root_property_title' => $rootProperty->title
@@ -424,12 +438,18 @@ class Pages extends WebPageController
             ])
             ->firstOrFail(['id', 'title']);
 
+        $companiesByPropCount = $this->getCompanyBeProperty([$property->id])->count(['id']);
+
         return view($this->getActualPage('how-to'), array_merge(
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
                         "code" => "/{root_code}/kak-sdat"
                     ]),
+                    'company_count' => [
+                        'count' => $companiesByPropCount,
+                        'suffix' => GetDeclNum($companiesByPropCount)
+                    ],
                 ],
                 'root_property_title' => $property->title,
                 'property_id' => [$property->id]
@@ -455,12 +475,18 @@ class Pages extends WebPageController
             ])
             ->firstOrFail(['id', 'title']);
 
+        $companiesByPropCount = $this->getCompanyBeProperty([$property->id])->count(['id']);
+
         return view($this->getActualPage('netochnost'), array_merge(
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
                         "code" => "/{root_code}/netochnost"
                     ]),
+                    'company_count' => [
+                        'count' => $companiesByPropCount,
+                        'suffix' => GetDeclNum($companiesByPropCount)
+                    ],
                 ],
                 'root_property_title' => $property->title,
                 'property_id' => [$property->id]
@@ -541,6 +567,8 @@ class Pages extends WebPageController
             $result->whereIn('property_id', $ids);
         }
 
-        return $result;
+        return Company::query()
+            ->whereIn('id', $result->pluck('company_id')->toArray())
+            ->where('active', true);
     }
 }

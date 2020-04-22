@@ -32,7 +32,7 @@
             </div>
         </header>
         {!! $menu['general'] !!}
-        <div class="how-to" itemscope itemtype="http://schema.org/HowTo">
+        <div class="how-to clear" itemscope itemtype="http://schema.org/HowTo">
             <h1 itemprop="name">{{ $header["seo"]["h1"] }}</h1>
             <p itemprop="description">Краткая инструкция по тому как наиболее выгодно сдать металлолом.</p>
             <meta  itemprop="supply" itemtype="http://schema.org/HowToSupply" content="Металлолом" />
