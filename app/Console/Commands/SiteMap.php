@@ -68,16 +68,19 @@ class SiteMap extends Command
                 ['urlable', true],
                 ['root_url', true]
             ])
-            ->whereNotNull('code')
             ->get(['id', 'code'])
             ->each(function (Property $item) use ($rootProp, $indexMap) {
-                $map = BaseSitemap::create()
-                    ->add(
-                        Url::create('/' . $item->code)
-                            ->setLastModificationDate(Carbon::now())
-                            ->setPriority(1)
-                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
-                    );
+                $mapName = $item->code ? 'region_' . $item->code : 'region_russia';
+                $map = BaseSitemap::create();
+
+                if ($item->code) {
+                    $map->add(
+                            Url::create('/' . $item->code)
+                                ->setLastModificationDate(Carbon::now())
+                                ->setPriority(1)
+                                ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+                        );
+                }
                 Property::query()
                     ->where([
                         ['urlable', true],
@@ -86,9 +89,9 @@ class SiteMap extends Command
                     ->whereIn('parent_id', $rootProp)
                     ->get(['id', 'code'])
                     ->each(function (Property $sectionItem) use ($map, $item) {
-                        $map
-                            ->add(
-                                Url::create('/' . $item->code . '/' . $sectionItem->code)
+                        $url = $item->code ? '/' . $item->code : '';
+                        $map->add(
+                                Url::create($url . '/' . $sectionItem->code)
                                     ->setLastModificationDate(Carbon::now())
                                     ->setPriority(1)
                                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
@@ -101,9 +104,9 @@ class SiteMap extends Command
                             ])
                             ->get(['id', 'code'])
                             ->each(function (Property $subSectionItem) use ($map, $item, $sectionItem) {
-                                $map
-                                    ->add(
-                                        Url::create('/' . $item->code . '/' . $sectionItem->code . '/' . $subSectionItem->code)
+                                $url = $item->code ? '/' . $item->code : '';
+                                $map->add(
+                                        Url::create($url . '/' . $sectionItem->code . '/' . $subSectionItem->code)
                                             ->setLastModificationDate(Carbon::now())
                                             ->setPriority(1)
                                             ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
@@ -111,10 +114,10 @@ class SiteMap extends Command
                             });
                     });
                 $map->writeToFile(
-                    public_path('region_' . $item->code . '_sitemap.xml')
+                    public_path($mapName . '_sitemap.xml')
                 );
                 $indexMap
-                    ->add('/region_' . $item->code . '_sitemap.xml');
+                    ->add('/' . $mapName . '_sitemap.xml');
             });
         //end
 
