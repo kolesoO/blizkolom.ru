@@ -45,6 +45,14 @@ class Company extends Base
     }
 
     /**
+     * @return HasMany
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'company_id');
+    }
+
+    /**
      * @param int $time
      * @return array
      */
@@ -86,16 +94,45 @@ class Company extends Base
      */
     public function getRating(): array
     {
+        $result = 0;
+        $this->reviews->each(function(Review $item) use (&$result) {
+            $result += $item->rating;
+        });
+
+        if ($this->open_from && $this->open_to) {
+            $result += 5;
+        }
+
+        if ($this->phone) {
+            $result += 5;
+        }
+
+        if ($this->description) {
+            $result += 5;
+        }
+
+        if ($this->preview_picture && $this->detail_picture) {
+            $result += 3;
+        }
+
+        if ($this->url) {
+            $result += 3;
+        }
+
+        if ($this->email) {
+            $result += 3;
+        }
+
         $str = 'bad';
 
-        if ((float) $this->rating >= 4) {
+        if ($result >= 4) {
             $str = 'good';
-        } elseif ((float) $this->rating >= 3) {
+        } elseif ($result >= 3) {
             $str = 'normal';
         }
 
         return [
-            'rating' => $this->rating,
+            'rating' => $result,
             'info' => $str,
         ];
     }
