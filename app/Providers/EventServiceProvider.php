@@ -26,14 +26,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //sql queries listener
-        \Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
-            \Log::info(json_encode($query->sql));
-            \Log::info(json_encode($query->bindings));
-            \Log::info(json_encode($query->time));
-            \Log::info("----");
-        });
-        //end
     }
 }

@@ -54,12 +54,15 @@ $(document).ready(function(){
     });
 
     $('body').on('click', '.btn-callback', function () {
-        $(".callback-form").find('[name=company]')
-            .val(
-                $(this).attr('data-company_name')
-            )
+        $(".callback-form").find('[name="company_id"]')
+            .val($(this).attr('data-company_id'));
+
+        $(".callback-form").find('[name="company_name"]')
+            .val($(this).attr('data-company_name'))
             .attr('disabled', '');
-        $(".callback-form").find('[name=company]')[0].dispatchEvent(new Event('change'));
+
+        $(".callback-form").find('[name="company_id"]')[0].dispatchEvent(new Event('change'));
+        $(".callback-form").find('[name="company_name"]')[0].dispatchEvent(new Event('change'));
 
         $(".callback-form").toggleClass("disable");
         $(".callback-form-back").toggleClass("disable");

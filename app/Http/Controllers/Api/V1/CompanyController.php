@@ -100,6 +100,7 @@ class CompanyController extends Controller
 
         $resultCollection = $builder
             ->limit($request->get('limit', 10))
+            ->orderByDesc('ranging')
             ->get()
             ->each(function(Company $item) {
                 $item->map_coords_str = $item->map_coords;

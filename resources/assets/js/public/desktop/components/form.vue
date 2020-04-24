@@ -4,7 +4,7 @@
         <div class="cb-title">Обратный звонок</div>
         <form @submit.prevent="submit">
             <p v-for="item in fieldsList">
-                <label :for="item.code">{{ item.title }}</label>
+                <label :for="item.code" v-if="item.type !== 'hidden'">{{ item.title }}</label>
                 <input
                         :name="item.code"
                         :type="item.type"
@@ -15,7 +15,7 @@
                 >
             </p>
             <button type="submit" class="btn-form enable">Перезвонить мне</button>
-            <p v-if="isSent" class="green">Сообщение успешно отправлено! Ждите, пока пункт приема вам перезвонит</p>
+            <p v-if="isSent" class="green">Сообщение успешно отправлено!<br>Ждите, пока пункт приема вам перезвонит</p>
         </form>
     </div>
 </template>

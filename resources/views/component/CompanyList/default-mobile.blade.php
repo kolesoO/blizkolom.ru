@@ -36,7 +36,11 @@
                     @if ($item->phone)
                         <div class="phone">
                             <span>{{ $item->phone }}</span>
-                            <div class="btn-callback" data-company_name="{{ $item->name }}">
+                            <div
+                                    class="btn-callback"
+                                    data-company_name="{{ $item->name }}"
+                                    data-company_id="{{ $item->id }}"
+                            >
                                 <img src="/images/callback-gray.svg">
                             </div>
                         </div>

@@ -35,6 +35,7 @@
                     <div
                             class="btn-callback"
                             :data-company_name="company.name"
+                            :data-company_id="company.id"
                     >обратный звонок</div>
                 </div>
                 <div v-if="company.email" class="mail">{{ company.email }}</div>

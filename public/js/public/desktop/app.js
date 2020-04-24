@@ -283,6 +283,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "v-company-list",
   data: function data() {
@@ -12354,7 +12355,10 @@ var render = function() {
                       "div",
                       {
                         staticClass: "btn-callback",
-                        attrs: { "data-company_name": company.name }
+                        attrs: {
+                          "data-company_name": company.name,
+                          "data-company_id": company.id
+                        }
                       },
                       [_vm._v("обратный звонок")]
                     )
@@ -12625,9 +12629,11 @@ var render = function() {
       [
         _vm._l(_vm.fieldsList, function(item) {
           return _c("p", [
-            _c("label", { attrs: { for: item.code } }, [
-              _vm._v(_vm._s(item.title))
-            ]),
+            item.type !== "hidden"
+              ? _c("label", { attrs: { for: item.code } }, [
+                  _vm._v(_vm._s(item.title))
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c("input", {
               attrs: {
@@ -12654,9 +12660,9 @@ var render = function() {
         _vm._v(" "),
         _vm.isSent
           ? _c("p", { staticClass: "green" }, [
-              _vm._v(
-                "Сообщение успешно отправлено! Ждите, пока пункт приема вам перезвонит"
-              )
+              _vm._v("Сообщение успешно отправлено!"),
+              _c("br"),
+              _vm._v("Ждите, пока пункт приема вам перезвонит")
             ])
           : _vm._e()
       ],
@@ -27101,8 +27107,10 @@ $(function () {
     $($(this).attr('data-target')).removeClass('closed');
   });
   $('body').on('click', '.btn-callback', function () {
-    $(".callback-form").find('[name=company]').val($(this).attr('data-company_name')).attr('disabled', '');
-    $(".callback-form").find('[name=company]')[0].dispatchEvent(new Event('change'));
+    $(".callback-form").find('[name="company_id"]').val($(this).attr('data-company_id'));
+    $(".callback-form").find('[name="company_name"]').val($(this).attr('data-company_name')).attr('disabled', '');
+    $(".callback-form").find('[name="company_id"]')[0].dispatchEvent(new Event('change'));
+    $(".callback-form").find('[name="company_name"]')[0].dispatchEvent(new Event('change'));
     $(".callback-form").toggleClass("disable");
     $(".callback-form-back").toggleClass("disable");
     $(".message-cb").remove();

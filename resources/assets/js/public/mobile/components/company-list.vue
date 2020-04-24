@@ -38,6 +38,7 @@
                     <div
                             class="btn-callback"
                             :data-company_name="company.name"
+                            :data-company_id="company.id"
                     >
                         <img src="/images/callback-gray.svg">
                     </div>

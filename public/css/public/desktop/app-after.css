@@ -67,7 +67,7 @@ footer .block {
     position: fixed;
     left: calc(50% - 148px);
     top: calc(50% - 192px);
-    width: fit-content;
+    width: 296px;
     padding: 1em;
     background: white;
     border-radius: 4px;

@@ -138,6 +138,7 @@ class CompanyList extends Base
             return [
                 'items' => (clone $totalBuilder)
                     ->limit($this->arParams["limit"])
+                    ->orderByDesc('ranging')
                     ->get()
                     ->each(function (Company $item) use ($priceProps) {
                         $item->pageUrl = route(

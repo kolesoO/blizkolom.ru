@@ -16,7 +16,7 @@ class Company extends Base
     protected $fillable = [
         'name', 'code', 'active', 'title', 'description', 'keywords',
         'h1', 'preview_text', 'detail_text', 'preview_picture', 'detail_picture', 'contacts',
-        'url', 'phone', 'email', 'map_coords', 'open_from', 'open_to', 'rating',
+        'url', 'phone', 'email', 'map_coords', 'open_from', 'open_to', 'ranging',
     ];
 
     /**
@@ -99,29 +99,13 @@ class Company extends Base
             $result += $item->rating;
         });
 
-        if ($this->open_from && $this->open_to) {
-            $result += 5;
+        if ($result > 0) {
+            $result = $result / $this->reviews->count();
+        } else {
+            $result = 3;
         }
 
-        if ($this->phone) {
-            $result += 5;
-        }
-
-        if ($this->description) {
-            $result += 5;
-        }
-
-        if ($this->preview_picture && $this->detail_picture) {
-            $result += 3;
-        }
-
-        if ($this->url) {
-            $result += 3;
-        }
-
-        if ($this->email) {
-            $result += 3;
-        }
+        $result = round($result, 1);
 
         $str = 'bad';
 
@@ -132,7 +116,7 @@ class Company extends Base
         }
 
         return [
-            'rating' => $result,
+            'rating' => number_format($result, 1),
             'info' => $str,
         ];
     }

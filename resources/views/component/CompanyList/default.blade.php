@@ -32,7 +32,11 @@
                     @if ($item->phone)
                         <div class="phone">
                             <span>{{ $item->phone }}</span>
-                            <div class="btn-callback" data-company_name="{{ $item->name }}">обратный звонок</div>
+                            <div
+                                    class="btn-callback"
+                                    data-company_name="{{ $item->name }}"
+                                    data-company_id="{{ $item->id }}"
+                            >обратный звонок</div>
                         </div>
                     @endif
                     @if ($item->email)

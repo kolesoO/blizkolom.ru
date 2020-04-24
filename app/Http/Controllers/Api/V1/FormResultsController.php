@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Jobs\CallBackEmail;
+use App\Resources\CallBack;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -25,11 +27,17 @@ class FormResultsController extends Controller
             ->where('code', $code)
             ->firstOrFail();
 
-        FormResult::query()
+        $data = $request->all();
+
+        if (FormResult::query()
             ->insert([
-                'content' => json_encode($request->all()),
+                'content' => json_encode($data),
                 'form_id' => $form->id,
-            ]);
+            ])) {
+            $this->dispatch(
+                new CallBackEmail(CallBack::make($data))
+            );
+        }
 
         return [];
     }
