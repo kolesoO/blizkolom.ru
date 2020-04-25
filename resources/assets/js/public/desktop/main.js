@@ -141,9 +141,7 @@ if ("serviceWorker" in navigator) {
     } else {
         // Register the service worker
         navigator.serviceWorker
-            .register("/js/public/sw.js", {
-                scope: "./"
-            })
+            .register("/js/public/sw.js")
             .then(function (reg) {
                 console.log("Service worker has been registered for scope: " + reg.scope);
             });
