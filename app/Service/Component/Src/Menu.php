@@ -42,6 +42,9 @@ class Menu extends Base
                             array_values($this->arParams["replace"]),
                             $item['link']
                         );
+                        if (strpos($item['link'], '//') === 0) {
+                            $item['link'] = substr($item['link'], 1, strlen($item['link']) - 1);
+                        }
                     }
                     unset($item);
                 }
