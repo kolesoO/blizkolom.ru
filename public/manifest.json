@@ -6,11 +6,11 @@
   "display": "standalone",
   "background_color": "#ededed",
   "icons": [{
-    "src": "/resource/homescreen48.png",
+    "src": "/images/screen/homescreen72.png",
     "sizes": "72x72",
     "type": "image/png"
   }, {
-    "src": "/resource/homescreen512.png",
+    "src": "/images/screen/homescreen512.png",
     "sizes": "512x512",
     "type": "image/png"
   }],
