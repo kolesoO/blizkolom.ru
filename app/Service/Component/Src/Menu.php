@@ -23,7 +23,10 @@ class Menu extends Base
     {
         $arData = $this->getCacheData($this->arParams, function() {
             if ($record = MenuModel::query()
-                ->where("code", "=", $this->arParams["code"])
+                ->where([
+                    ["code", $this->arParams["code"]],
+                    ['active', true]
+                ])
                 ->first()) {
                 return $record->toArray();
             }

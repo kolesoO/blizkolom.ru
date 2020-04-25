@@ -6,11 +6,11 @@ namespace App\Models;
  * Class ServiceMenu
  *
  * @property int $id
+ * @property bool $active
  * @property string $name
  * @property string $code
  * @property string $description
  * @property string $content
- * @package App\Models
  */
 class ServiceMenu extends Base
 {
@@ -41,4 +41,9 @@ class ServiceMenu extends Base
      * @var string
      */
     protected $table = "service_menu";
+
+    /** @inheritDoc */
+    protected $casts = [
+        'active' => 'bool'
+    ];
 }

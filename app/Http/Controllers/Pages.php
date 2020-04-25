@@ -263,7 +263,7 @@ class Pages extends WebPageController
                 ])
             ],
             $this->getHeaderData([
-                'replace' => ['{code}' => '/' . $propertyCode],
+                'replace' => ['{code}' => $propertyCode ? '/' . $propertyCode : ''],
             ]),
             $this->getFooterData()
         ));
@@ -418,7 +418,7 @@ class Pages extends WebPageController
                 'root_property_title' => $rootProperty->title
             ],
             $this->getHeaderData([
-                'replace' => ['{code}' => '/' . $rootProperty->code],
+                'replace' => ['{code}' => $rootProperty ? '/' . $rootProperty->code : ''],
             ]),
             $this->getFooterData()
         ));
@@ -455,7 +455,7 @@ class Pages extends WebPageController
                 'property_id' => [$property->id]
             ],
             $this->getHeaderData([
-                'replace' => ['{code}' => '/' . $property->code],
+                'replace' => ['{code}' => $property ? '/' . $property->code : ''],
             ]),
             $this->getFooterData()
         ));
@@ -492,7 +492,7 @@ class Pages extends WebPageController
                 'property_id' => [$property->id]
             ],
             $this->getHeaderData([
-                'replace' => ['{code}' => '/' . $property->code],
+                'replace' => ['{code}' => $property ? '/' . $property->code : ''],
             ]),
             $this->getFooterData()
         ));
