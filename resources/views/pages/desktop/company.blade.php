@@ -27,7 +27,11 @@
         @if ($company->phone)
             <div class="phone">
                 <span>{{ $company->phone }}</span>
-                <div class="btn-callback" data-company_name="{{ $company->name }}">обратный звонок</div>
+                <div
+                        class="btn-callback"
+                        data-company_name="{{ $company->name }}"
+                        data-company_id="{{ $company->id }}"
+                >обратный звонок</div>
             </div>
         @endif
         @if ($company->email)
@@ -75,13 +79,13 @@
                             @foreach ($value['childs'] as $child)
                                 <tr>
                                     <td>{{ $child['type'] }}</td>
-                                    <td>{{ $child['value'] }}</td>
+                                    <td>{{ $child['value'] }} руб/кг</td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
                                 <td>{{ $value['type'] }}</td>
-                                <td>{{ $value['value'] }}</td>
+                                <td>{{ $value['value'] }} руб/кг</td>
                             </tr>
                         @endif
                     @endforeach

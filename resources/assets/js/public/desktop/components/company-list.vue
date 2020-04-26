@@ -78,7 +78,7 @@
                     <tbody>
                         <tr v-for="price in priceInfo.values">
                             <td>{{ price.type }}</td>
-                            <td>{{ price.value }} <span>₽/кг</span></td>
+                            <td>{{ price.value }} <span>руб/кг</span></td>
                         </tr>
                     </tbody>
                 </table>
