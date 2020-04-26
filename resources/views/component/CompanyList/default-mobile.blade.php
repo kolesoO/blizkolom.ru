@@ -85,7 +85,7 @@
                             @foreach ($price['values'] as $value)
                                 <tr>
                                     <td>{{ $value['type'] }}</td>
-                                    <td>{{ $value['value'] }} <span>₽/кг</span></td>
+                                    <td>{{ $value['value'] }} <span>руб/кг</span></td>
                                 </tr>
                             @endforeach
                             </tbody>
