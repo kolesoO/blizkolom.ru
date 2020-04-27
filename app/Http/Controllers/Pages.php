@@ -444,7 +444,7 @@ class Pages extends WebPageController
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
-                        "code" => "/{root_code}/kak-sdat"
+                        "code" => "/kak-sdat"
                     ]),
                     'company_count' => [
                         'count' => $companiesByPropCount,
@@ -481,7 +481,7 @@ class Pages extends WebPageController
             [
                 "header" => [
                     "seo" => app()->component->includeComponent("Seo", "", [
-                        "code" => "/{root_code}/netochnost"
+                        "code" => "/netochnost"
                     ]),
                     'company_count' => [
                         'count' => $companiesByPropCount,
