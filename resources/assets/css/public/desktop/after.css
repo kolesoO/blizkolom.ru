@@ -50,6 +50,7 @@ footer .block a {
     margin-right: 1em;
     float: left;
     text-decoration: none;
+    line-height: 2em;
 }
 footer .line {
     color: #484848;
@@ -310,4 +311,8 @@ footer .block {
 }
 .button:focus {
     outline: none;
+}
+a.pseudo {
+    text-decoration: none;
+    color: black;
 }

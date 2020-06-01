@@ -656,3 +656,7 @@ tr.title {
 .dislike:before {
     background-image: url(/images/thumbs-down.svg);
 }
+a.pseudo {
+    text-decoration: none;
+    color: black;
+}

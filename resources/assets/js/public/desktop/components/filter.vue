@@ -10,8 +10,13 @@
                     <li
                             v-for="childItem in item.childs"
                             :class="childItem.class"
-                            @click="updateSelectedFilterIds(childItem.id)"
-                    >{{ childItem.title }}</li>
+                    >
+                        <a
+                                class="pseudo"
+                                :href="childItem.url"
+                                @click.prevent="updateSelectedFilterIds(childItem.id)"
+                        >{{ childItem.title }}</a>
+                    </li>
                     <li class="btn" @click="filterData">Применить</li>
                 </ul>
             </div>
@@ -223,7 +228,8 @@
                     'property',
                     [],
                     {
-                        'filtered': '1'
+                        'filtered': '1',
+                        'with_url': '1',
                     },
                     (response) => {
                         let item, itemInner, itemInner2, itemInner3;

@@ -60,4 +60,12 @@ class File extends Base
     {
         return self::$remoteDomain.$value;
     }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return self::withRemoteDomain($this->path);
+    }
 }

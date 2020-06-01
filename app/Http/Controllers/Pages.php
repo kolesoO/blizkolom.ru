@@ -7,12 +7,15 @@ use App\Models\CompanyPrices;
 use App\Models\CompanyProperty;
 use App\Models\File;
 use App\Models\Property;
+use DaveJamesMiller\Breadcrumbs\BreadcrumbsGenerator;
+use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Throwable;
 
 class Pages extends WebPageController
 {
@@ -34,7 +37,7 @@ class Pages extends WebPageController
             ->first();
 
         if (!$property) {
-            return $this->section(null, $propertyCode, null, $filteredPropertiesCode);
+            return $this->section(null, $propertyCode, null, $filteredPropertiesCode, true);
         }
 
         $propsId = [$property->id];
@@ -57,7 +60,7 @@ class Pages extends WebPageController
 
         $propsId = array_unique($propsId);
 
-        $companiesByPropCount = $this->getCompanyBeProperty($propsId)->count(['id']);
+        $companiesByPropCount = $this->getCompanyByProperty($propsId)->count(['id']);
 
         return view($this->getActualPage('index'), array_merge(
             [
@@ -96,6 +99,15 @@ class Pages extends WebPageController
                         'suffix' => GetDeclNum($companiesByPropCount)
                     ],
                 ],
+                'footer' => [
+                    'regions' => app()->component->includeComponent("PropertyList", 'region', [
+                        'filter' => [
+                            'urlable' => true,
+                            'root_url' => true,
+                            '!code' => null,
+                        ]
+                    ]),
+                ],
                 'root_property_title' => $property->title,
                 'property_id' => $propsId,
                 'company_list' => app()->component->includeComponent("CompanyList", $this->getWithDevicePrefix("default"), [
@@ -123,16 +135,31 @@ class Pages extends WebPageController
      * @param string $property2Code
      * @param string|null $property3Code
      * @param string|null $filteredPropertiesCode
+     * @param bool $fromIndex
      * @return View
      */
     public function section(
         ?string $propertyCode,
         string $property2Code,
         string $property3Code = null,
-        string $filteredPropertiesCode = null
+        string $filteredPropertiesCode = null,
+        bool $fromIndex = false
     ): View {
-        if ($propertyCode == 'priem') {
-            return $this->company(null, $property2Code);
+        //fix for crumbs
+        $routeName = $fromIndex ? 'index' : 'section';
+        $routeParams = [
+            'propertyCode' => $propertyCode,
+            'property2Code' => $property2Code,
+            'property3Code' => $property3Code,
+            'filteredPropCode' => $filteredPropertiesCode,
+        ];
+        if ($fromIndex) {
+            $routeParams = [
+                'propertyCode' => $property2Code,
+                'property2Code' => null,
+                'property3Code' => null,
+                'filteredPropCode' => $filteredPropertiesCode,
+            ];
         }
         //end
 
@@ -155,8 +182,31 @@ class Pages extends WebPageController
                     ['root_url', 1]
                 ])
                 ->firstOrFail();
+
+            //fix for crumbs
+//            $routeParams = [
+//                'propertyCode' => $propertyCode,
+//                'property2Code' => $property2Code,
+//                'property3Code' => $property3Code,
+//                'filteredPropCode' => $filteredPropertiesCode,
+//            ];
+            //end
+        } else {
+            //fix for crumbs
+            Breadcrumbs::for('root-region', static function (BreadcrumbsGenerator $trail) use ($rootProperty) {
+                $trail->push(
+                    'Главная',
+                    route('index', ['propertyCode' => $rootProperty->code], false),
+                    ['meta_content' => 'Пункты сдачи']
+                );
+            });
+            if ($property3Code) {
+                $routeName = 'section-3';
+            }
+            //end
         }
 
+        /** @var Property $mainProperty */
         $mainProperty = Property::query()
             ->where([
                 ['code', $property2Code],
@@ -165,6 +215,7 @@ class Pages extends WebPageController
             ->firstOrFail();
 
         if (!is_null($property3Code)) {
+            /** @var Property $mainProperty */
             $innerProperty = Property::query()
                 ->where([
                     ['code', $property3Code],
@@ -174,8 +225,7 @@ class Pages extends WebPageController
                 ->firstOrFail();
         }
 
-        $mainProperty = $mainProperty->toArray();
-        $propsId = [$rootProperty->id, $mainProperty['id']];
+        $propsId = [$rootProperty->id, $mainProperty->id];
 
         if (isset($innerProperty)) {
             $innerProperty = $innerProperty->toArray();
@@ -196,6 +246,13 @@ class Pages extends WebPageController
                 $propsId += array_merge($propsId, $rs->toArray());
                 $additPriceProps = array_reverse($rs->toArray());
             }
+
+            //fix for crumbs
+            if ($routeName === 'index') {
+                $routeName .= '-property';
+            }
+            $routeName .= '-filter';
+            //end
         }
         //end
 
@@ -208,7 +265,75 @@ class Pages extends WebPageController
         }
         //end
 
-        $companiesByPropCount = $this->getCompanyBeProperty($propsId)->count(['id']);
+        $companiesByPropCount = $this->getCompanyByProperty($propsId)->count(['id']);
+
+        //fix for crumbs
+        $innerProperty = $innerProperty ?? null;
+        Breadcrumbs::for(
+            $innerProperty ? $routeName . '-parent' : $routeName,
+            static function(BreadcrumbsGenerator $trail) use (
+                $rootProperty,
+                $companiesByPropCount,
+                $routeName,
+                $routeParams,
+                $mainProperty,
+                $innerProperty
+            ) {
+                if ($innerProperty) {
+                    if (!is_null($routeParams['property3Code'])) {
+                        unset($routeParams['property3Code']);
+                        $routeName = 'section';
+                    } else {
+                        unset($routeParams['property2Code']);
+                        $routeName = 'index';
+                    }
+                }
+                $seoData = app()->component->includeComponent("Seo", "", [
+                    "code" => '/{root_code}/' . $mainProperty->code,
+                    "replace" => [
+                        "h1" => [
+                            "{genetiv}" => $rootProperty->genetiv,
+                            "{gdetiv}" => $rootProperty->gdetiv,
+                            "{nominativ}" => $rootProperty->nominativ,
+                            '{num}' => $companiesByPropCount,
+                        ],
+                    ]
+                ]);
+                try {
+                    $trail->parent('root-region');
+                } catch (Throwable $exception) {
+                    $trail->parent('root');
+                }
+                $trail->push((string) $seoData['h1'], route($routeName, $routeParams, false));
+            }
+        );
+        if ($innerProperty) {
+            Breadcrumbs::for(
+                $routeName,
+                static function(BreadcrumbsGenerator $trail) use (
+                    $seoCode,
+                    $rootProperty,
+                    $companiesByPropCount,
+                    $routeName,
+                    $routeParams
+                ) {
+                    $seoData = app()->component->includeComponent("Seo", "", [
+                        "code" => $seoCode,
+                        "replace" => [
+                            "h1" => [
+                                "{genetiv}" => $rootProperty->genetiv,
+                                "{gdetiv}" => $rootProperty->gdetiv,
+                                "{nominativ}" => $rootProperty->nominativ,
+                                '{num}' => $companiesByPropCount,
+                            ],
+                        ]
+                    ]);
+                    $trail->parent($routeName . '-parent');
+                    $trail->push((string) $seoData['h1'], route($routeName, $routeParams, false));
+                }
+            );
+        }
+        //end
 
         return view($this->getActualPage('section'), array_merge(
             [
@@ -330,6 +455,7 @@ class Pages extends WebPageController
         $itemPrices = CompanyPrices::query()
             ->where('company_id', $company->id)
             ->get();
+
         $priceProps->each(function (Property $pricePropItem) use ($itemPrices, &$priceInfo) {
             $priceList = [];
             $pricePropItem->childs->each(function (Property $childPricePropItem) use ($itemPrices, &$priceList) {
@@ -371,7 +497,31 @@ class Pages extends WebPageController
 
         $company->rating = $company->getRating();
 
-        $companiesByPropCount = $this->getCompanyBeProperty([$rootProperty->id])->count(['id']);
+        $companiesByPropCount = $this->getCompanyByProperty([$rootProperty->id])->count(['id']);
+
+        Breadcrumbs::for(
+            'company-detail',
+            static function (BreadcrumbsGenerator $trail) use ($rootProperty, $company) {
+                $seoData = app()->component->includeComponent("Seo", "", [
+                    "code" => '/priem/{code}',
+                    "replace" => [
+                        "h1" => [
+                            "{h1}" => str_replace(
+                                ['{genetiv}', '{gdetiv}', '{nominativ}'],
+                                [$rootProperty->genetiv, $rootProperty->gdetiv, $rootProperty->nominativ],
+                                $company->h1
+                            )
+                        ],
+                    ],
+                ]);
+                $trail->parent('root');
+                $trail->push(
+                    (string) $seoData['h1'],
+                    route('company-detail', ['companyCode' => $company->code], false),
+                    ['meta_content' => (string) $seoData['h1']]
+                );
+            }
+        );
 
         return view($this->getActualPage('company'), array_merge(
             [
@@ -438,7 +588,7 @@ class Pages extends WebPageController
             ])
             ->firstOrFail(['id', 'title']);
 
-        $companiesByPropCount = $this->getCompanyBeProperty([$property->id])->count(['id']);
+        $companiesByPropCount = $this->getCompanyByProperty([$property->id])->count(['id']);
 
         return view($this->getActualPage('how-to'), array_merge(
             [
@@ -475,7 +625,7 @@ class Pages extends WebPageController
             ])
             ->firstOrFail(['id', 'title']);
 
-        $companiesByPropCount = $this->getCompanyBeProperty([$property->id])->count(['id']);
+        $companiesByPropCount = $this->getCompanyByProperty([$property->id])->count(['id']);
 
         return view($this->getActualPage('netochnost'), array_merge(
             [
@@ -559,7 +709,7 @@ class Pages extends WebPageController
      * @param array $ids
      * @return Builder
      */
-    protected function getCompanyBeProperty(array $ids = []): Builder
+    protected function getCompanyByProperty(array $ids = []): Builder
     {
         $result = CompanyProperty::query();
 

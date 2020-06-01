@@ -2,21 +2,34 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\CompanyPrices;
 use App\Models\File;
+use App\Repositories\CompanyRepository;
+use App\Resources\CompanyResource;
 use Carbon\Carbon;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use App\Models\Company;
 use App\Models\CompanyProperty;
 use App\Models\Property;
+use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class CompanyController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    /** @var CompanyRepository */
+    protected $companyRepository;
+
+    /**
+     * @param CompanyRepository $companyRepository
+     */
+    public function __construct(CompanyRepository $companyRepository)
+    {
+        $this->companyRepository = $companyRepository;
+    }
 
     public function index(Request $request): array
     {
@@ -144,5 +157,73 @@ class CompanyController extends Controller
             'total' => $totalBuilder->count(),
             'list' => $resultCollection->toArray()
         ];
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function listByClient(Request $request): JsonResponse
+    {
+        CompanyResource::withoutWrapping();
+
+        return CompanyResource::collection(
+            $this->companyRepository->getByClient(
+                Auth::guard('api')->user()
+            )
+        )
+            ->response($request);
+    }
+
+    /**
+     * @param UpdateCompanyRequest $request
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function update(UpdateCompanyRequest $request, string $id): JsonResponse
+    {
+        $company = $this->companyRepository->find((int) $id);
+
+        if (is_null($company)) {
+            throw (new ModelNotFoundException())
+                ->setModel(CompanyRepository::getModelClass());
+        }
+
+        $this->companyRepository->save(
+            $company->fill($request->all())
+        );
+
+        return CompanyResource::make($company)->response($request);
+    }
+
+    /**
+     * @param UpdateCompanyRequest $request
+     */
+    public function store(UpdateCompanyRequest $request): void
+    {
+        $company = new Company();
+
+        $this->companyRepository->save(
+            $company->fill($request->all())
+        );
+    }
+
+    /**
+     * @param string $id
+     */
+    public function delete(string $id): void
+    {
+        $company = $this->companyRepository->find((int) $id);
+
+        if (is_null($company)) {
+            throw (new ModelNotFoundException())
+                ->setModel(CompanyRepository::getModelClass());
+        }
+
+        try {
+            $company->delete();
+        } catch (Throwable $exception) {
+            //not need yet
+        }
     }
 }

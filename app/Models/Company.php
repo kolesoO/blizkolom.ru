@@ -1,11 +1,39 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+/**
+ * @property int $id
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
+ * @property string $name
+ * @property string $code
+ * @property bool $active
+ * @property string $title
+ * @property string $description
+ * @property string $keywords
+ * @property string $h1
+ * @property string $preview_text
+ * @property string $detail_text
+ * @property int $preview_picture
+ * @property int $detail_picture
+ * @property string $contacts
+ * @property string $url
+ * @property string $phone
+ * @property string $email
+ * @property string $map_coords
+ * @property Carbon $open_from
+ * @property Carbon $open_to
+ * @property int $ranging
+ * @property-read int $client_id
+ */
 class Company extends Base
 {
     /**
@@ -37,6 +65,22 @@ class Company extends Base
     protected $table = "companies";
 
     /**
+     * @return HasOne
+     */
+    public function preview_picture(): HasOne
+    {
+        return $this->hasOne(File::class, 'id', 'preview_picture');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function detail_picture(): HasOne
+    {
+        return $this->hasOne(File::class, 'id', 'detail_picture');
+    }
+
+    /**
      * @return MorphMany
      */
     public function options(): MorphMany
@@ -50,6 +94,14 @@ class Company extends Base
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'company_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function gallery(): HasMany
+    {
+        return $this->hasMany(CompanyGallery::class, 'company_id');
     }
 
     /**

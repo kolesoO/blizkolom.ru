@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Jobs\CallBackEmail;
-use App\Resources\CallBack;
+use App\Resources\CallBackResource;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use App\Models\Form;
 use App\Models\FormResult;
 
@@ -35,7 +35,9 @@ class FormResultsController extends Controller
                 'form_id' => $form->id,
             ])) {
             $this->dispatch(
-                new CallBackEmail(CallBack::make($data))
+                new CallBackEmail(
+                    CallBackResource::make($data)
+                )
             );
         }
 

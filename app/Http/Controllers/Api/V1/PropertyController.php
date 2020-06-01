@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Service\UrlGenerator\UrlGenerator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use App\Models\Property;
 
 class PropertyController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index(Request $request): array
+    public function index(Request $request, UrlGenerator $urlGenerator): array
     {
+        $withUrl = (bool) $request->get('with_url', false);
+        $rootProperty = $this->getRootProperty($request);
         $builder = Property::query();
 
         if ($request->get('filtered', false)) {
@@ -33,14 +36,34 @@ class PropertyController extends Controller
             $builder->where('title', 'like', '%' . $request->get('title') . '%');
         }
 
-        return $builder
-            ->get()
-            ->each(function($item) use ($request) {
-                if ($request->get('with_url', false)) {
-                    $item->url = '/' . $item->code;
+        $collection = $builder->get();
+
+        return $collection
+            ->each(function(Property $item) use ($urlGenerator, $collection, $withUrl, $rootProperty) {
+                if ($withUrl) {
+                    $prefix = !$item->root_url && $rootProperty ? $rootProperty->code : null;
+                    $item->url = $urlGenerator->generateByCollection($item, $collection, $prefix);
                 }
+
                 return $item;
             })
             ->toArray();
+    }
+
+    protected function getRootProperty(Request $request): ?Property
+    {
+        $code = explode('/', preg_replace('/https?:\/\/[a-zA-Z0-9.]+/i', '', $request->server('HTTP_REFERER')));
+        $code = $code[1] ?? null;
+
+        /** @var Property|null $property */
+        $property = Property::query()
+            ->where([
+                'urlable' => true,
+                'root_url' => true,
+                'code' => $code,
+            ])
+            ->first();
+
+        return $property;
     }
 }

@@ -5,8 +5,8 @@ $(document).ready(function(){
         $(this).parent('.fltr').children(".fltr div:last-child").toggleClass("closed");
     });
 
-    $('body').on('click', '.fltr .select', function() {
-        $(this).toggleClass('slcted');
+    $('body').on('click', '.fltr .select a', function() {
+        $(this).parent().toggleClass('slcted');
     });
 
     $(window).scroll(function() {

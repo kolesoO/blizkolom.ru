@@ -1,7 +1,7 @@
             <footer>
                 {!! $menu['take'] !!}
                 {!! $menu['to_points'] !!}
-                <div class="line">{!! $footer['copyright'] !!}</div>
+                <div class="line">{!! $copyright !!}</div>
             </footer>
             <v-form code="callback"></v-form>
             <div id="scrolltop" style="display: none;">
