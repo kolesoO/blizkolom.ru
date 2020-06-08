@@ -1,4 +1,5 @@
             </div>
+            {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render() }}
             <footer>
                 <div class="ftr-content">
                     {!! $menu['take'] !!}

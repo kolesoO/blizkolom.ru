@@ -1,4 +1,5 @@
         </div>
+        {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render() }}
         <footer>
             {!! $menu['take'] !!}
             {!! $menu['to_points'] !!}
