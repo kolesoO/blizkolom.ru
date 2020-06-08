@@ -12,15 +12,10 @@
                 <a
                         itemprop="item"
                         href="{{ $breadcrumb->url }}"
-                >
-                {{ $breadcrumb->title }}
-                <meta itemprop="name" content="{{ $breadcrumb->meta_content ?? '' }}">
-            </a>/
+                >{{ $breadcrumb->title }}<meta itemprop="name" content="{{ $breadcrumb->meta_content ?? '' }}"></a>
+                <span> / </span>
             @else
-                <span itemprop="item">
-                    {{ $breadcrumb->title }}
-                    <meta itemprop="name" content="{{ $breadcrumb->meta_content ?? '' }}">
-                </span>
+                <span itemprop="item">{{ $breadcrumb->title }}<meta itemprop="name" content="{{ $breadcrumb->meta_content ?? '' }}"></span>
             @endif
             <meta itemprop="position" content="{{ ($key + 1) }}">
         </span>

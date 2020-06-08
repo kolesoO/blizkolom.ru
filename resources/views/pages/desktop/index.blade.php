@@ -8,6 +8,7 @@
         <v-map></v-map>
         <div id="cards">{!! $company_list !!}</div>
     </div>
+    {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render() }}
 </div>
 
 @include("site-templates.public.desktop.footer")

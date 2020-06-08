@@ -28,6 +28,7 @@ class Pages extends WebPageController
      */
     public function index(string $propertyCode = null, string $filteredPropertiesCode = null): View
     {
+        /** @var Property $property */
         $property = Property::query()
             ->where([
                 ['code', $propertyCode],
@@ -62,38 +63,59 @@ class Pages extends WebPageController
 
         $companiesByPropCount = $this->getCompanyByProperty($propsId)->count(['id']);
 
+        $seo = app()->component->includeComponent("Seo", "", [
+            "code" => "/{root_code}",
+            "replace" => [
+                "title" => [
+                    "{genetiv}" => $property->genetiv,
+                    "{gdetiv}" => $property->gdetiv,
+                    "{nominativ}" => $property->nominativ,
+                    '{num}' => $companiesByPropCount,
+                ],
+                "description" => [
+                    "{genetiv}" => $property->genetiv,
+                    "{gdetiv}" => $property->gdetiv,
+                    "{nominativ}" => $property->nominativ,
+                    '{num}' => $companiesByPropCount,
+                ],
+                "keywords" => [
+                    "{genetiv}" => $property->genetiv,
+                    "{gdetiv}" => $property->gdetiv,
+                    "{nominativ}" => $property->nominativ,
+                    '{num}' => $companiesByPropCount,
+                ],
+                "h1" => [
+                    "{genetiv}" => $property->genetiv,
+                    "{gdetiv}" => $property->gdetiv,
+                    "{nominativ}" => $property->nominativ,
+                    '{num}' => $companiesByPropCount,
+                ],
+                'breadcrumb_title' => [
+                    "{genetiv}" => $property->genetiv,
+                    "{gdetiv}" => $property->gdetiv,
+                    "{nominativ}" => $property->nominativ,
+                    '{num}' => $companiesByPropCount,
+                ],
+            ]
+        ]);
+
+        Breadcrumbs::for('index', static function (BreadcrumbsGenerator $trail) use ($property, $seo) {
+            if (is_null($property->code)) {
+                return;
+            }
+
+            $trail->parent('root');
+            $trail->push(
+                $seo['breadcrumb_title'],
+                route('index', ['propertyCode' => $property->code], false),
+                ['meta_content' => '&#128205; ' . $seo['breadcrumb_title']]
+            );
+        });
+
         return view($this->getActualPage('index'), array_merge(
             [
                 "header" => [
-                    "seo" => app()->component->includeComponent("Seo", "", [
-                        "code" => "/{root_code}",
-                        "replace" => [
-                            "title" => [
-                                "{genetiv}" => $property->genetiv,
-                                "{gdetiv}" => $property->gdetiv,
-                                "{nominativ}" => $property->nominativ,
-                                '{num}' => $companiesByPropCount,
-                            ],
-                            "description" => [
-                                "{genetiv}" => $property->genetiv,
-                                "{gdetiv}" => $property->gdetiv,
-                                "{nominativ}" => $property->nominativ,
-                                '{num}' => $companiesByPropCount,
-                            ],
-                            "keywords" => [
-                                "{genetiv}" => $property->genetiv,
-                                "{gdetiv}" => $property->gdetiv,
-                                "{nominativ}" => $property->nominativ,
-                                '{num}' => $companiesByPropCount,
-                            ],
-                            "h1" => [
-                                "{genetiv}" => $property->genetiv,
-                                "{gdetiv}" => $property->gdetiv,
-                                "{nominativ}" => $property->nominativ,
-                                '{num}' => $companiesByPropCount,
-                            ],
-                        ]
-                    ]),
+                    "seo" => $seo,
                     'company_count' => [
                         'count' => $companiesByPropCount,
                         'suffix' => GetDeclNum($companiesByPropCount)
@@ -163,6 +185,7 @@ class Pages extends WebPageController
         }
         //end
 
+        /** @var Property $rootProperty */
         $rootProperty = Property::query()
             ->where([
                 ['code', $propertyCode],
@@ -194,11 +217,25 @@ class Pages extends WebPageController
         } else {
             //fix for crumbs
             Breadcrumbs::for('root-region', static function (BreadcrumbsGenerator $trail) use ($rootProperty) {
-                $trail->push(
-                    'Главная',
-                    route('index', ['propertyCode' => $rootProperty->code], false),
-                    ['meta_content' => 'Пункты сдачи']
-                );
+                $trail->parent('root');
+
+                if ($rootProperty->code) {
+                    $seo = app()->component->includeComponent("Seo", "", [
+                        "code" => "/{root_code}",
+                        "replace" => [
+                            'breadcrumb_title' => [
+                                "{genetiv}" => $rootProperty->genetiv,
+                                "{gdetiv}" => $rootProperty->gdetiv,
+                                "{nominativ}" => $rootProperty->nominativ,
+                            ],
+                        ]
+                    ]);
+                    $trail->push(
+                        $seo['breadcrumb_title'],
+                        route('index', ['propertyCode' => $rootProperty->code], false),
+                        ['meta_content' => '&#128205; ' . $seo['breadcrumb_title']]
+                    );
+                }
             });
             if ($property3Code) {
                 $routeName = 'section-3';
@@ -304,7 +341,11 @@ class Pages extends WebPageController
                 } catch (Throwable $exception) {
                     $trail->parent('root');
                 }
-                $trail->push((string) $seoData['h1'], route($routeName, $routeParams, false));
+                $trail->push(
+                    (string) $seoData['breadcrumb_title'],
+                    route($routeName, $routeParams, false),
+                    ['meta_content' => '&#128312; ' . $seoData['breadcrumb_title']]
+                );
             }
         );
         if ($innerProperty) {
@@ -329,7 +370,11 @@ class Pages extends WebPageController
                         ]
                     ]);
                     $trail->parent($routeName . '-parent');
-                    $trail->push((string) $seoData['h1'], route($routeName, $routeParams, false));
+                    $trail->push(
+                        (string) $seoData['breadcrumb_title'],
+                        route($routeName, $routeParams, false),
+                        ['meta_content' => '&#128312; ' . $seoData['breadcrumb_title']]
+                    );
                 }
             );
         }
@@ -518,7 +563,7 @@ class Pages extends WebPageController
                 $trail->push(
                     (string) $seoData['h1'],
                     route('company-detail', ['companyCode' => $company->code], false),
-                    ['meta_content' => (string) $seoData['h1']]
+                    ['meta_content' => '&#128312; ' . (string) $seoData['h1']]
                 );
             }
         );
