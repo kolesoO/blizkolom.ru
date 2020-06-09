@@ -2,6 +2,8 @@
                 <div class="ftr-content">
                     {!! $menu['take'] !!}
                     {!! $menu['to_points'] !!}
+                    {!! $footer['cvetmet_sections'] !!}
+                    {!! $footer['chermet_sections'] !!}
                     @if (isset($footer['regions']))
                         {!! $footer['regions'] !!}
                     @endif

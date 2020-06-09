@@ -13,8 +13,8 @@
                     >
                         <a
                                 class="pseudo"
-                                :href="childItem.url"
-                                @click.prevent="updateSelectedFilterIds(childItem.id)"
+                                href="#"
+                                @click="updateSelectedFilterIds(childItem.id)"
                         >{{ childItem.title }}</a>
                     </li>
                     <li class="btn" @click="filterData">Применить</li>

@@ -74,7 +74,7 @@ class WebPageController extends Controller
         return [
             "copyright" => app()->component->includeComponent("SingleText", "default", [
                 "code" => "copyright"
-            ])
+            ]),
         ];
     }
 }

@@ -129,6 +129,22 @@ class Pages extends WebPageController
                             '!code' => null,
                         ]
                     ]),
+                    'cvetmet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'cvetmet',
+                        'root' => $property->id
+                    ]),
+                    'chermet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'chermet',
+                        'root' => $property->id
+                    ]),
                 ],
                 'root_property_title' => $property->title,
                 'property_id' => $propsId,
@@ -417,6 +433,24 @@ class Pages extends WebPageController
                         'suffix' => GetDeclNum($companiesByPropCount)
                     ],
                 ],
+                'footer' => [
+                    'cvetmet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'cvetmet',
+                        'root' => $rootProperty->id
+                    ]),
+                    'chermet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'chermet',
+                        'root' => $rootProperty->id
+                    ]),
+                ],
                 'property_id' => $propsId,
                 'root_property_title' => $rootProperty->title,
                 'company_list' => app()->component->includeComponent("CompanyList", $this->getWithDevicePrefix("default"), [
@@ -609,6 +643,24 @@ class Pages extends WebPageController
                         'suffix' => GetDeclNum($companiesByPropCount)
                     ],
                 ],
+                'footer' => [
+                    'cvetmet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'cvetmet',
+                        'root' => $rootProperty->id
+                    ]),
+                    'chermet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'chermet',
+                        'root' => $rootProperty->id
+                    ]),
+                ],
                 'company' => $company,
                 'root_property_title' => $rootProperty->title
             ],
@@ -646,6 +698,24 @@ class Pages extends WebPageController
                         'suffix' => GetDeclNum($companiesByPropCount)
                     ],
                 ],
+                'footer' => [
+                    'cvetmet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'cvetmet',
+                        'root' => $property->id
+                    ]),
+                    'chermet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'chermet',
+                        'root' => $property->id
+                    ]),
+                ],
                 'root_property_title' => $property->title,
                 'property_id' => [$property->id]
             ],
@@ -682,6 +752,24 @@ class Pages extends WebPageController
                         'count' => $companiesByPropCount,
                         'suffix' => GetDeclNum($companiesByPropCount)
                     ],
+                ],
+                'footer' => [
+                    'cvetmet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'cvetmet',
+                        'root' => $property->id
+                    ]),
+                    'chermet_sections' => app()->component->includeComponent("PropertyList", 'child-list', [
+                        'filter' => [
+                            'urlable' => true,
+                            '!code' => null,
+                        ],
+                        'parent_code' => 'chermet',
+                        'root' => $property->id
+                    ]),
                 ],
                 'root_property_title' => $property->title,
                 'property_id' => [$property->id]

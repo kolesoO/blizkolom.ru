@@ -12570,10 +12570,9 @@ var render = function() {
                       "a",
                       {
                         staticClass: "pseudo",
-                        attrs: { href: childItem.url },
+                        attrs: { href: "#" },
                         on: {
                           click: function($event) {
-                            $event.preventDefault()
                             return _vm.updateSelectedFilterIds(childItem.id)
                           }
                         }

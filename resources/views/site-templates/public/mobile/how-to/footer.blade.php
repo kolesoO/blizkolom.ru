@@ -3,6 +3,8 @@
         <footer>
             {!! $menu['take'] !!}
             {!! $menu['to_points'] !!}
+            {!! $footer['cvetmet_sections'] !!}
+            {!! $footer['chermet_sections'] !!}
             <div class="line">{!! $copyright !!}</div>
         </footer>
         <v-form code="callback"></v-form>
