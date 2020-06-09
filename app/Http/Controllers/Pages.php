@@ -107,7 +107,7 @@ class Pages extends WebPageController
             $trail->parent('root');
             $trail->push(
                 $seo['breadcrumb_title'],
-                route('index', ['propertyCode' => $property->code], false),
+                route('index', ['propertyCode' => $property->code]),
                 ['meta_content' => '&#128205; ' . $seo['breadcrumb_title']]
             );
         });
@@ -232,7 +232,7 @@ class Pages extends WebPageController
                     ]);
                     $trail->push(
                         $seo['breadcrumb_title'],
-                        route('index', ['propertyCode' => $rootProperty->code], false),
+                        route('index', ['propertyCode' => $rootProperty->code]),
                         ['meta_content' => '&#128205; ' . $seo['breadcrumb_title']]
                     );
                 }
@@ -343,7 +343,7 @@ class Pages extends WebPageController
                 }
                 $trail->push(
                     (string) $seoData['breadcrumb_title'],
-                    route($routeName, $routeParams, false),
+                    route($routeName, $routeParams),
                     ['meta_content' => '&#128312; ' . $seoData['breadcrumb_title']]
                 );
             }
@@ -372,7 +372,7 @@ class Pages extends WebPageController
                     $trail->parent($routeName . '-parent');
                     $trail->push(
                         (string) $seoData['breadcrumb_title'],
-                        route($routeName, $routeParams, false),
+                        route($routeName, $routeParams),
                         ['meta_content' => '&#128312; ' . $seoData['breadcrumb_title']]
                     );
                 }
@@ -562,7 +562,7 @@ class Pages extends WebPageController
                 $trail->parent('root');
                 $trail->push(
                     (string) $seoData['h1'],
-                    route('company-detail', ['companyCode' => $company->code], false),
+                    route('company-detail', ['companyCode' => $company->code]),
                     ['meta_content' => '&#128312; ' . (string) $seoData['h1']]
                 );
             }

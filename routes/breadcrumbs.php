@@ -8,7 +8,7 @@ use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 Breadcrumbs::for('root', static function (BreadcrumbsGenerator $trail) {
     $trail->push(
         'Пункты сдачи',
-        route('index', ['propertyCode' => null], false),
+        route('index', ['propertyCode' => null]),
         ['meta_content' => '&#9851;️ Пункты сдачи']
     );
 });
@@ -20,7 +20,7 @@ Breadcrumbs::for('how', static function (BreadcrumbsGenerator $trail) {
     $trail->parent('root');
     $trail->push(
         (string) $seoData['breadcrumb_title'],
-        route('how', [], false),
+        route('how', []),
         ['meta_content' => '&#128312 ' . (string) $seoData['breadcrumb_title']]
     );
 });
@@ -32,7 +32,7 @@ Breadcrumbs::for('netochnost', static function (BreadcrumbsGenerator $trail) {
     $trail->parent('root');
     $trail->push(
         (string) $seoData['breadcrumb_title'],
-        route('how', [], false),
+        route('how', []),
         ['meta_content' => '&#128312 ' . (string) $seoData['breadcrumb_title']]
     );
 });
