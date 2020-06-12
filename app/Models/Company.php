@@ -65,19 +65,19 @@ class Company extends Base
     protected $table = "companies";
 
     /**
-     * @return HasOne
+     * @return BelongsTo
      */
-    public function preview_picture(): HasOne
+    public function preview_picture(): BelongsTo
     {
-        return $this->hasOne(File::class, 'id', 'preview_picture');
+        return $this->belongsTo(File::class, 'id', 'preview_picture');
     }
 
     /**
-     * @return HasOne
+     * @return BelongsTo
      */
-    public function detail_picture(): HasOne
+    public function detail_picture(): BelongsTo
     {
-        return $this->hasOne(File::class, 'id', 'detail_picture');
+        return $this->belongsTo(File::class, 'id', 'detail_picture');
     }
 
     /**

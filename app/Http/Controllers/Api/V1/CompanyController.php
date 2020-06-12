@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Models\Client;
 use App\Models\CompanyPrices;
 use App\Models\File;
 use App\Repositories\CompanyRepository;
+use App\Repositories\FileRepository;
 use App\Resources\CompanyResource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
 use App\Models\Company;
 use App\Models\CompanyProperty;
@@ -23,12 +26,15 @@ class CompanyController extends Controller
     /** @var CompanyRepository */
     protected $companyRepository;
 
+    protected $fileRepository;
+
     /**
      * @param CompanyRepository $companyRepository
      */
-    public function __construct(CompanyRepository $companyRepository)
+    public function __construct(CompanyRepository $companyRepository, FileRepository $fileRepository)
     {
         $this->companyRepository = $companyRepository;
+        $this->fileRepository = $fileRepository;
     }
 
     public function index(Request $request): array
@@ -167,10 +173,11 @@ class CompanyController extends Controller
     {
         CompanyResource::withoutWrapping();
 
+        /** @var Client $client */
+        $client = Auth::guard('api')->user();
+
         return CompanyResource::collection(
-            $this->companyRepository->getByClient(
-                Auth::guard('api')->user()
-            )
+            $this->companyRepository->getByClient($client)
         )
             ->response($request);
     }
@@ -187,6 +194,20 @@ class CompanyController extends Controller
         if (is_null($company)) {
             throw (new ModelNotFoundException())
                 ->setModel(CompanyRepository::getModelClass());
+        }
+
+        //pictures
+        if ($request->get('preview_picture') instanceof UploadedFile) {
+            $oldFile = $this->fileRepository->find($company->preview_picture);
+
+            if ($oldFile) {
+                $this->fileRepository->delete($oldFile);
+            }
+
+            $newFile = $this->fileRepository->save(
+                $request->get('preview_picture')
+            );
+            //$company->preview_picture()->as
         }
 
         $this->companyRepository->save(

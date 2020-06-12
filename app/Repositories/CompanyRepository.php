@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\Client;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 
 class CompanyRepository
 {
@@ -36,6 +37,10 @@ class CompanyRepository
      */
     public function save(Company $entity): bool
     {
+        if ($entity->preview_picture instanceof UploadedFile) {
+
+        }
+
         return $entity->save();
     }
 
