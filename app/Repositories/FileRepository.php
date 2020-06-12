@@ -13,9 +13,9 @@ class FileRepository
 {
     private $persistence;
 
-    public function __construct(Persistence $persistence)
+    public function __construct()
     {
-        $this->persistence = $persistence;
+
     }
 
     /**
