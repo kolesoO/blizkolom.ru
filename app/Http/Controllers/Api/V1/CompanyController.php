@@ -2,21 +2,40 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Requests\UpdateCompanyRequest;
+use App\Models\Client;
 use App\Models\CompanyPrices;
 use App\Models\File;
+use App\Repositories\CompanyRepository;
+use App\Repositories\FileRepository;
+use App\Resources\CompanyResource;
 use Carbon\Carbon;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Controller;
 use App\Models\Company;
 use App\Models\CompanyProperty;
 use App\Models\Property;
+use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class CompanyController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    /** @var CompanyRepository */
+    protected $companyRepository;
+
+    protected $fileRepository;
+
+    /**
+     * @param CompanyRepository $companyRepository
+     */
+    public function __construct(CompanyRepository $companyRepository, FileRepository $fileRepository)
+    {
+        $this->companyRepository = $companyRepository;
+        $this->fileRepository = $fileRepository;
+    }
 
     public function index(Request $request): array
     {
@@ -144,5 +163,88 @@ class CompanyController extends Controller
             'total' => $totalBuilder->count(),
             'list' => $resultCollection->toArray()
         ];
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function listByClient(Request $request): JsonResponse
+    {
+        CompanyResource::withoutWrapping();
+
+        /** @var Client $client */
+        $client = Auth::guard('api')->user();
+
+        return CompanyResource::collection(
+            $this->companyRepository->getByClient($client)
+        )
+            ->response($request);
+    }
+
+    /**
+     * @param UpdateCompanyRequest $request
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function update(UpdateCompanyRequest $request, string $id): JsonResponse
+    {
+        $company = $this->companyRepository->find((int) $id);
+
+        if (is_null($company)) {
+            throw (new ModelNotFoundException())
+                ->setModel(CompanyRepository::getModelClass());
+        }
+
+        //pictures
+        if ($request->get('preview_picture') instanceof UploadedFile) {
+            $oldFile = $this->fileRepository->find($company->preview_picture);
+
+            if ($oldFile) {
+                $this->fileRepository->delete($oldFile);
+            }
+
+            $newFile = $this->fileRepository->save(
+                $request->get('preview_picture')
+            );
+            //$company->preview_picture()->as
+        }
+
+        $this->companyRepository->save(
+            $company->fill($request->all())
+        );
+
+        return CompanyResource::make($company)->response($request);
+    }
+
+    /**
+     * @param UpdateCompanyRequest $request
+     */
+    public function store(UpdateCompanyRequest $request): void
+    {
+        $company = new Company();
+
+        $this->companyRepository->save(
+            $company->fill($request->all())
+        );
+    }
+
+    /**
+     * @param string $id
+     */
+    public function delete(string $id): void
+    {
+        $company = $this->companyRepository->find((int) $id);
+
+        if (is_null($company)) {
+            throw (new ModelNotFoundException())
+                ->setModel(CompanyRepository::getModelClass());
+        }
+
+        try {
+            $company->delete();
+        } catch (Throwable $exception) {
+            //not need yet
+        }
     }
 }

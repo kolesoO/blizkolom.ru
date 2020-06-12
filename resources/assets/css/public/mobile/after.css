@@ -221,7 +221,8 @@ footer {
     line-height: 2em;
     padding: .5em 0;
 }
-footer .title {
+footer .title,
+footer .block .title a{
     color: #8c8c8c;
 }
 .block a {
@@ -655,4 +656,8 @@ tr.title {
 }
 .dislike:before {
     background-image: url(/images/thumbs-down.svg);
+}
+a.pseudo {
+    text-decoration: none;
+    color: black;
 }

@@ -6,4 +6,6 @@
 <v-map></v-map>
 <div class="cards">{!! $company_list !!}</div>
 
+{{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render() }}
+
 @include("site-templates.public.mobile.footer")

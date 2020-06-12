@@ -72,11 +72,9 @@ class WebPageController extends Controller
     public function getFooterData():array
     {
         return [
-            "footer" => [
-                "copyright" => app()->component->includeComponent("SingleText", "default", [
-                    "code" => "copyright"
-                ])
-            ],
+            "copyright" => app()->component->includeComponent("SingleText", "default", [
+                "code" => "copyright"
+            ]),
         ];
     }
 }

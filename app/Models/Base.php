@@ -1,18 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Class Base
- * @package App\Models
- */
 class Base extends Model
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected static $available = [];
 
     /**

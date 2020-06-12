@@ -21,7 +21,11 @@ header {
 #app{
     background-color: #fafafa;
 }
-.content-head, .ftr-content, h1, #filters, #listing, .card.big, .fast-links, #rev, .fast-table, #table-container, #page-404, .form, .how-to {
+.content-head, .ftr-content,
+h1, #filters, .card.big,
+.fast-links, #rev, .fast-table,
+#table-container, #page-404,
+.form, .how-to, #yamap, .bread {
     max-width: 960px;
     margin: 0 auto;
     clear: both;
@@ -232,12 +236,17 @@ h1 {
     border-top: 1px solid #d4d2d2;
     float: left;
     width: 100%;
-    padding-bottom: 2em;
 }
 #yamap {
     width: 370px;
     float: right;
     margin-top: 1.5em;
+    top: 1.5em;
+    position: sticky;
+}
+#yamap-single{
+    height: 30vw;
+    margin-bottom: 1.5vw;
 }
 #map {
     width: 100%;
@@ -667,6 +676,26 @@ thead tr {
     content: '';
     display: table;
     clear: both;
+}
+.bread {
+    padding-top: 2em;
+    padding-bottom: 2em;
+    border-top: 1px solid #d4d2d2;
+    color: #616161;
+}
+
+.bread a {
+    color: #3663fd;
+    text-decoration: none;
+}
+#listing {
+    max-width: 960px;
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 1.5em;
 }
 
 /* how-to page */

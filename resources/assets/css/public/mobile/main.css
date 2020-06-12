@@ -177,3 +177,19 @@ h1.crd {
     display: table;
     clear: both;
 }
+.bread {
+    margin-top: 1em;
+    padding: 1.5em 5.66%;
+    background: #ededed;
+    color: #616161;
+    width: 100%;
+    overflow-x: scroll;
+    box-sizing: border-box;
+    white-space: nowrap;
+    float: left;
+}
+
+.bread a {
+    color: #3663fd;
+    text-decoration: none;
+}

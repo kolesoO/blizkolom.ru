@@ -2,7 +2,12 @@
                 <div class="ftr-content">
                     {!! $menu['take'] !!}
                     {!! $menu['to_points'] !!}
-                    <div class="line">{!! $footer["copyright"] !!}</div>
+                    {!! $footer['cvetmet_sections'] !!}
+                    {!! $footer['chermet_sections'] !!}
+                    @if (isset($footer['regions']))
+                        {!! $footer['regions'] !!}
+                    @endif
+                    <div class="line">{!! $copyright !!}</div>
                 </div>
             </footer>
             <div class="callback-form-back disable"></div>

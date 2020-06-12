@@ -35,6 +35,12 @@ class Menu extends Base
         if (is_array($arData) && count($arData) > 0) {
             if (isset($arData["content"])) {
                 $arData["items"] = json_decode($arData["content"], true);
+                $arData['name'] = str_replace(
+                    array_keys($this->arParams["replace"]),
+                    array_values($this->arParams["replace"]),
+                    $arData['name']
+                );
+
                 if (is_array($arData["items"])) {
                     foreach ($arData["items"] as &$item) {
                         $item['link'] = str_replace(
@@ -48,6 +54,7 @@ class Menu extends Base
                     }
                     unset($item);
                 }
+
                 unset($arData["content"]);
             }
             $this->arResult = $arData;

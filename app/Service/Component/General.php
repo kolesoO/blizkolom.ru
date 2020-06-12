@@ -27,9 +27,9 @@ class General
         $className = __NAMESPACE__ . "\\" . ucfirst($compName);
         $rsComp = new $className;
         if ($rsComp instanceof Base) {
-            $this->compName = $compName;
             $rsComp->setParams($rsComp->prepareParams($arParams));
             $rsComp->execute();
+            $this->compName = $compName;
             $this->includeTemplate($rsComp, $compTmp);
             return $this->viewResult;
         }

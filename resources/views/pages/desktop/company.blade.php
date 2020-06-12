@@ -1,9 +1,34 @@
+@php
+    use App\Models\Company;
+
+    /** @var Company $company */
+
+    $openCloseInfo = '';
+
+    if ($company->openTime['state'] === 'from') {
+        $openCloseInfo = '<span class="'
+            . ($company->openTime['status'] ? 'green' : 'red')
+            . '">открыто с ' . $company->openTime['time'] . '</span>';
+    } elseif ($company->openTime['state'] === 'to') {
+        $openCloseInfo = '<span class="'
+            . ($company->openTime['status'] ? 'green' : 'red')
+            . '">открыто до ' . $company->openTime['time'] . '</span>';
+    } elseif ($company->openTime['state'] === 'full') {
+        $openCloseInfo = '<span class="'
+            . ($company->openTime['status'] ? 'green' : 'red')
+            . '">открыто ' . $company->openTime['time'] . '</span>';
+    }
+
+@endphp
+
 @include("site-templates.public.desktop.header")
 
 <div class="fast-links">
     <a href="#about">Описание</a>
     <a href="#price">Цены на прием</a>
-    <!--a href="#yamap">На карте</a-->
+    @if (strlen($company->map_coords) > 0)
+        <!--a href="#yamap">На карте</a-->
+    @endif
     <!--a href="#rev">Отзывы</a-->
 </div>
 <div class="card big">
@@ -94,6 +119,11 @@
         </div>
     @endforeach
 </div>
+
+@if (strlen($company->map_coords) > 0)
+    <!--div id="yamap-single"></div-->
+@endif
+
 <!--div id="rev">
     <div class="title">Отзывы о пункте приема</div>
     <div class="rating">4.0 <img src="/images/star.svg"><img src="/images/star.svg"><img src="/images/star.svg"><img src="/images/star.svg"><img src="/images/star-gray.svg"><div>2 отзыва</div></div>
@@ -116,5 +146,53 @@
         <div class="dislike">10</div>
     </div>
 </div-->
+
+{{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render() }}
+
+@if (strlen($company->map_coords) > 0)
+    <!--script type="application/javascript">
+        function mapInit() {
+            yandexMap = new ymaps.Map("yamap-single", {
+                center: [55.811881, 37.749481],
+                zoom: 9
+            });
+            clusterer = new ymaps.Clusterer({
+                preset: 'islands#invertedBlackClusterIcons',
+                groupByCoordinates: false,
+                clusterHideIconOnBalloonOpen: false,
+                geoObjectHideIconOnBalloonOpen: false
+            });
+            yandexMap.behaviors.disable("scrollZoom");
+            mapPlacemark = new ymaps.Placemark(
+                [{{ $company->map_coords }}], {
+                    balloonContentBody: [
+                        '<address>',
+                        '<strong><a href="{{ route('company-detail', ['companyCode' => $company->code], false) }}">{{ $company->name  }}</a></strong>',
+                        '<br/>',
+                        '{{ $company->contacts }}',
+                        '<br/>',
+                        '{{ $openCloseInfo }}',
+                        '<br/>',
+                        '{{ $company->phone }}',
+                        '<br/>',
+                        '<a href="#price" class="price-link">смотреть цены</a>',
+                        '</address>'
+                    ].join('')
+                }, {
+                    iconLayout: "default#image",
+                    iconImageHref: "https://static.blizkolom.ru/img/marker.svg",
+                    iconImageSize: [31, 30],
+                    iconImageOffset: [-15, -30],
+                    balloonPane: "outerBalloon"
+                }
+            );
+            yandexMap.geoObjects.add(mapPlacemark);
+            clusterer.add(mapPlacemark);
+            yandexMap.geoObjects.add(clusterer);
+            yandexMap.setBounds(yandexMap.geoObjects.getBounds(),{zoomMargin: 9});
+        }
+        ymaps.ready(mapInit);
+    </script-->
+@endif
 
 @include("site-templates.public.desktop.footer")

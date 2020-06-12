@@ -1,8 +1,11 @@
         </div>
+        {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render() }}
         <footer>
             {!! $menu['take'] !!}
             {!! $menu['to_points'] !!}
-            <div class="line">{!! $footer['copyright'] !!}</div>
+            {!! $footer['cvetmet_sections'] !!}
+            {!! $footer['chermet_sections'] !!}
+            <div class="line">{!! $copyright !!}</div>
         </footer>
         <v-form code="callback"></v-form>
         <div id="scrolltop" style="display: none;">

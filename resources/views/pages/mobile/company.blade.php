@@ -119,4 +119,6 @@
     </div>
 </div-->
 
+{{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render() }}
+
 @include("site-templates.public.mobile.company.footer")

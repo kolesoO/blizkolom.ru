@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Models\Company;
-use App\Resources\CallBack;
+use App\Resources\CallBackResource;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 
 class CallBackEmail implements ShouldQueue
 {
-    /** @var CallBack */
+    /** @var CallBackResource */
     protected $data;
 
     /**
-     * @param CallBack $data
+     * @param CallBackResource $data
      */
-    public function __construct(CallBack $data)
+    public function __construct(CallBackResource $data)
     {
         $this->data = $data;
     }
