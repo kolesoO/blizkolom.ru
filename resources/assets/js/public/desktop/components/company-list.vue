@@ -31,7 +31,12 @@
                 <div v-if="company.map_coords_str" class="coord">{{ company.map_coords_str }}</div>
                 <div v-if="company.options.length > 0" class="serv">{{ company.options }}</div>
                 <div v-if="company.phone" class="phone">
-                    <span>{{ company.phone }}</span>
+                    <a
+                            :href="['tel:' + company.phone]"
+                            class="js-statistic"
+                            :data-company_id="company.id"
+                            data-type="call"
+                    >{{ company.phone }}</a>
                     <div
                             class="btn-callback"
                             :data-company_name="company.name"

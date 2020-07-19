@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Jobs\CallBackEmail;
 use App\Resources\CallBackResource;
+use App\Service\Managers\StatisticManager;
+use App\Service\Statistic\Type;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Models\Form;
@@ -14,14 +16,15 @@ use App\Models\FormResult;
 
 class FormResultsController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs;
 
     /**
      * @param Request $request
      * @param string $code
+     * @param StatisticManager $statisticManager
      * @return array
      */
-    public function store(Request $request, string $code): array
+    public function store(Request $request, string $code, StatisticManager $statisticManager): array
     {
         $form = Form::query()
             ->where('code', $code)
@@ -34,11 +37,11 @@ class FormResultsController extends Controller
                 'content' => json_encode($data),
                 'form_id' => $form->id,
             ])) {
+            $resource = CallBackResource::make($data);
             $this->dispatch(
-                new CallBackEmail(
-                    CallBackResource::make($data)
-                )
+                new CallBackEmail($resource)
             );
+            $statisticManager->create($resource->company_id, Type::CALL_BACK);
         }
 
         return [];

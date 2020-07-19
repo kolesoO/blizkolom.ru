@@ -1,3 +1,6 @@
+@php
+    /** @var array|null $arResult */
+@endphp
 @if (is_array($arResult["items"]) && count($arResult["items"]) > 0)
     <div class="menu">
         <div class="content-head">

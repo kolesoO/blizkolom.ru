@@ -7,6 +7,8 @@ use App\Models\CompanyPrices;
 use App\Models\CompanyProperty;
 use App\Models\File;
 use App\Models\Property;
+use App\Service\Managers\StatisticManager;
+use App\Service\Statistic\Type;
 use DaveJamesMiller\Breadcrumbs\BreadcrumbsGenerator;
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use Illuminate\Database\Eloquent\Builder;
@@ -477,7 +479,7 @@ class Pages extends WebPageController
      * @param string $companyCode
      * @return View
      */
-    public function company(string $companyCode): View
+    public function company(string $companyCode, StatisticManager $statisticManager): View
     {
         $rootProperty = Property::query()
             ->where([
@@ -487,6 +489,7 @@ class Pages extends WebPageController
             ])
             ->firstOrFail();
 
+        /** @var Company $company */
         $company = Company::query()
             ->where('code', $companyCode)
             ->firstOrFail();
@@ -601,6 +604,8 @@ class Pages extends WebPageController
                 );
             }
         );
+
+        $statisticManager->create($company->id, Type::GO_TO_PAGE);
 
         return view($this->getActualPage('company'), array_merge(
             [

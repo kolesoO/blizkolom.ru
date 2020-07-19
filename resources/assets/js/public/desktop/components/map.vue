@@ -8,7 +8,7 @@
         <div class="promo-map">
             <span class="title">Не можете найти свой пункт приема?</span>
             <span>Добавьте его сами, это бесплатно!</span>
-            <!--div class="btn">Добавить компанию</div-->
+            <a href="https://lk.blizkolom.ru" target="_blank" class="btn">Добавить компанию</a>
         </div>
     </div>
 </template>
@@ -48,7 +48,7 @@
                             '<br>',
                             item.contacts + '<br>' + openCloseInfo,
                             '<br>',
-                            item.phone,
+                            '<a href="tel:' + item.phone + '" class="js-statistic" data-company_id="' + item.id + '" data-type="call">' + item.phone + '</a>',
                             '<br/>',
                             '<a href="#comp-' + item.id + '" class="price-link">смотреть цены</a>',
                             '</address>'

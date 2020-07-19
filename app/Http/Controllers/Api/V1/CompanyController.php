@@ -1,40 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
+use App\Concerns\HasClient;
 use App\Http\Requests\UpdateCompanyRequest;
-use App\Models\Client;
 use App\Models\CompanyPrices;
 use App\Models\File;
 use App\Repositories\CompanyRepository;
-use App\Repositories\FileRepository;
 use App\Resources\CompanyResource;
+use App\Service\Managers\CompanyManager;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
 use App\Models\Company;
 use App\Models\CompanyProperty;
 use App\Models\Property;
-use Illuminate\Support\Facades\Auth;
-use Throwable;
 
 class CompanyController extends Controller
 {
+    use HasClient;
+
     /** @var CompanyRepository */
     protected $companyRepository;
 
-    protected $fileRepository;
+    /** @var CompanyManager */
+    protected $companyManager;
 
     /**
      * @param CompanyRepository $companyRepository
+     * @param CompanyManager $companyManager
      */
-    public function __construct(CompanyRepository $companyRepository, FileRepository $fileRepository)
+    public function __construct(CompanyRepository $companyRepository, CompanyManager $companyManager)
     {
         $this->companyRepository = $companyRepository;
-        $this->fileRepository = $fileRepository;
+        $this->companyManager = $companyManager;
     }
 
     public function index(Request $request): array
@@ -173,11 +176,10 @@ class CompanyController extends Controller
     {
         CompanyResource::withoutWrapping();
 
-        /** @var Client $client */
-        $client = Auth::guard('api')->user();
-
         return CompanyResource::collection(
-            $this->companyRepository->getByClient($client)
+            $this->companyRepository->getByClient(
+                $this->getClient()
+            )
         )
             ->response($request);
     }
@@ -196,21 +198,7 @@ class CompanyController extends Controller
                 ->setModel(CompanyRepository::getModelClass());
         }
 
-        //pictures
-        if ($request->get('preview_picture') instanceof UploadedFile) {
-            $oldFile = $this->fileRepository->find($company->preview_picture);
-
-            if ($oldFile) {
-                $this->fileRepository->delete($oldFile);
-            }
-
-            $newFile = $this->fileRepository->save(
-                $request->get('preview_picture')
-            );
-            //$company->preview_picture()->as
-        }
-
-        $this->companyRepository->save(
+        $this->companyManager->save(
             $company->fill($request->all())
         );
 
@@ -219,14 +207,20 @@ class CompanyController extends Controller
 
     /**
      * @param UpdateCompanyRequest $request
+     * @return JsonResponse
      */
-    public function store(UpdateCompanyRequest $request): void
+    public function store(UpdateCompanyRequest $request): JsonResponse
     {
         $company = new Company();
 
-        $this->companyRepository->save(
+        $company->client()->associate(
+            $this->getClient()
+        );
+        $this->companyManager->save(
             $company->fill($request->all())
         );
+
+        return CompanyResource::make($company)->response($request);
     }
 
     /**
@@ -241,10 +235,6 @@ class CompanyController extends Controller
                 ->setModel(CompanyRepository::getModelClass());
         }
 
-        try {
-            $company->delete();
-        } catch (Throwable $exception) {
-            //not need yet
-        }
+        $this->companyManager->delete($company);
     }
 }

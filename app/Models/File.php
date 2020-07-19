@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Traits\Date;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Class File
@@ -47,6 +48,9 @@ class File extends Base
      */
     protected $table = "files";
 
+    /** @var UploadedFile */
+    protected $uploadedFile;
+
     /**
      * @var string
      */
@@ -62,10 +66,21 @@ class File extends Base
     }
 
     /**
-     * @return string
+     * @return UploadedFile
      */
-    public function getPath(): string
+    public function getUploadedFile(): UploadedFile
     {
-        return self::withRemoteDomain($this->path);
+        return $this->uploadedFile;
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @return $this
+     */
+    public function setUploadedFile(UploadedFile $file): self
+    {
+        $this->uploadedFile = $file;
+
+        return $this;
     }
 }

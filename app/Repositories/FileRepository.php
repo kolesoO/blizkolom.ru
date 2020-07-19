@@ -5,28 +5,29 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\File;
-use App\Repositories\Contracts\File\Persistence;
+use App\Service\Persistence\File\ServerPersistence;
 use Illuminate\Http\UploadedFile;
 use Throwable;
 
 class FileRepository
 {
+    /** @var ServerPersistence */
     private $persistence;
 
-    public function __construct()
+    public function __construct(ServerPersistence $persistence)
     {
-
+        $this->persistence = $persistence;
     }
 
     /**
-     * @param array $attributes
+     * @param UploadedFile $file
      * @return File
      */
-    public function createModel(UploadedFile $file): File
+    public function createFromUploadedFile(UploadedFile $file): File
     {
         return new File([
-            'width' => '',
-            'height' => '',
+            'width' => null,
+            'height' => null,
             'size' => $file->getSize(),
             'content_type' => $file->getMimeType(),
             'path' => $file->path(),
@@ -46,13 +47,24 @@ class FileRepository
     }
 
     /**
-     * @param UploadedFile $file
+     * @param File $file
      * @param array $options
      * @return bool
      */
-    public function save(UploadedFile $file, array $options = []): File
+    public function save(File $file, array $options = []): bool
     {
-        return new File();
+        $uploadedFile = $this->persistence->persist(
+            $file->getUploadedFile()
+        );
+        $file->path = $this->persistence->getRelativePath($uploadedFile);
+
+        if (!$file->save($options)) {
+            $this->persistence->delete($uploadedFile);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -62,7 +74,15 @@ class FileRepository
     public function delete(File $entity): bool
     {
         try {
-            return $entity->delete();
+            $file = $this->persistence->retrieve($entity->path);
+
+            if ($entity->delete()) {
+                $this->persistence->delete($file);
+
+                return true;
+            }
+
+            return false;
         } catch (Throwable $exception) {
             return false;
         }
