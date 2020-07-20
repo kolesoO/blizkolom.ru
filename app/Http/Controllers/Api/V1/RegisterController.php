@@ -6,6 +6,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Register\RegisterRequest;
 use App\Repositories\ClientRepository;
+use App\Resources\ClientResource;
+use App\Service\Tokenizer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -24,23 +26,27 @@ class RegisterController extends Controller
 
     /**
      * @param RegisterRequest $request
+     * @param Tokenizer $tokenizer
      * @return JsonResponse
      */
-    public function register(RegisterRequest $request): JsonResponse
+    public function register(RegisterRequest $request, Tokenizer $tokenizer): JsonResponse
     {
         $client = $this->clientRepository->getByLogin(
             $request->get('login')
         );
 
         if (!is_null($client)) {
-            return new JsonResponse('client already exists', Response::HTTP_CONFLICT);
+            return new JsonResponse('Клиент с таким логином уже зарегистрирован', Response::HTTP_CONFLICT);
         }
 
         $client = $this->clientRepository->createModel(
             $request->all()
         );
         $this->clientRepository->save($client);
+        $this->clientRepository->updateToken($client, $tokenizer->getHash());
 
-        return new JsonResponse('register completed');
+        return ClientResource::make($client)
+            ->additional(['api_token' => $tokenizer->getToken()])
+            ->response($request);
     }
 }
