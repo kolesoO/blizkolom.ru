@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
-class Request extends FormRequest
+abstract class Request extends FormRequest
 {
     /**
      * @param array $errors

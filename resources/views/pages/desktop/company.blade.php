@@ -18,7 +18,6 @@
             . ($company->openTime['status'] ? 'green' : 'red')
             . '">открыто ' . $company->openTime['time'] . '</span>';
     }
-
 @endphp
 
 @include("site-templates.public.desktop.header")
@@ -51,7 +50,12 @@
         <div class="about">{!! $company->detail_text !!}</div>
         @if ($company->phone)
             <div class="phone">
-                <span>{{ $company->phone }}</span>
+                <a
+                        href="tel:{{ $company->phone }}"
+                        class="js-statistic"
+                        data-company_id="{{ $company->id }}"
+                        data-type="{{ \App\Service\Statistic\Type::CALL }}"
+                >{{ $company->phone }}</a>
                 <div
                         class="btn-callback"
                         data-company_name="{{ $company->name }}"

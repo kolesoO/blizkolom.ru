@@ -89,6 +89,10 @@
     clear: both;
     position: relative;
 }
+.card .phone a {
+    color: #3663fd;
+    text-decoration: none;
+}
 .card .phone:before, .card .mail:before, .card .site:before, .card .clock:before {
     content: '';
     width:1.5em;

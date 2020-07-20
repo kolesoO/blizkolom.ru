@@ -31,7 +31,12 @@
                     <div class="serv">{{ implode(', ', $item->options->pluck('value')->toArray()) }}</div>
                     @if ($item->phone)
                         <div class="phone">
-                            <span>{{ $item->phone }}</span>
+                            <a
+                                    href="tel:{{ $item->phone }}"
+                                    class="js-statistic"
+                                    data-company_id="{{ $item->id }}"
+                                    data-type="{{ \App\Service\Statistic\Type::CALL }}"
+                            >{{ $item->phone }}</a>
                             <div
                                     class="btn-callback"
                                     data-company_name="{{ $item->name }}"

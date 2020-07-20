@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Models\Client;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\UploadedFile;
+use Throwable;
 
 class CompanyRepository
 {
@@ -17,6 +17,15 @@ class CompanyRepository
     public static function getModelClass(): string
     {
         return Company::class;
+    }
+
+    /**
+     * @param array $attributes
+     * @return Company
+     */
+    public function create(array $attributes = []): Company
+    {
+        return new Company($attributes);
     }
 
     /**
@@ -33,20 +42,30 @@ class CompanyRepository
 
     /**
      * @param Company $entity
+     * @param array $options
      * @return bool
      */
-    public function save(Company $entity): bool
+    public function save(Company $entity, array $options = []): bool
     {
-        if ($entity->preview_picture instanceof UploadedFile) {
+        return $entity->save($options);
+    }
 
+    /**
+     * @param Company $entity
+     * @return bool
+     */
+    public function delete(Company $entity): bool
+    {
+        try {
+            return $entity->delete();
+        } catch (Throwable $exception) {
+            return false;
         }
-
-        return $entity->save();
     }
 
     /**
      * @param Client $client
-     * @return Collection
+     * @return Collection|Company[]
      */
     public function getByClient(Client $client): Collection
     {

@@ -37,7 +37,7 @@
                             '<br>',
                             item.contacts + '<br>' + openCloseInfo,
                             '<br>',
-                            item.phone,
+                            '<a href="tel:' + item.phone + '" class="js-statistic" data-company_id="' + item.id + '" data-type="call">' + item.phone + '</a>',
                             '<br>',
                             '<a href="#comp-' + item.id + '" class="price-link">смотреть цены</a>',
                             '</address>'

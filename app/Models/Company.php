@@ -42,8 +42,8 @@ class Company extends Base
      * @var array
      */
     protected $fillable = [
-        'name', 'code', 'active', 'title', 'description', 'keywords',
-        'h1', 'preview_text', 'detail_text', 'preview_picture', 'detail_picture', 'contacts',
+        'name', 'active', 'title', 'description', 'keywords',
+        'h1', 'preview_text', 'detail_text', 'contacts', 'preview_picture', 'detail_picture',
         'url', 'phone', 'email', 'map_coords', 'open_from', 'open_to', 'ranging',
     ];
 
@@ -64,12 +64,18 @@ class Company extends Base
      */
     protected $table = "companies";
 
+    /** @var array */
+    protected $attributes = [
+        'preview_picture' => null,
+        'detail_picture' => null,
+    ];
+
     /**
      * @return BelongsTo
      */
     public function preview_picture(): BelongsTo
     {
-        return $this->belongsTo(File::class, 'id', 'preview_picture');
+        return $this->belongsTo(File::class, 'preview_picture');
     }
 
     /**
@@ -77,7 +83,7 @@ class Company extends Base
      */
     public function detail_picture(): BelongsTo
     {
-        return $this->belongsTo(File::class, 'id', 'detail_picture');
+        return $this->belongsTo(File::class, 'detail_picture');
     }
 
     /**
@@ -97,11 +103,11 @@ class Company extends Base
     }
 
     /**
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function gallery(): HasMany
+    public function client(): BelongsTo
     {
-        return $this->hasMany(CompanyGallery::class, 'company_id');
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     /**

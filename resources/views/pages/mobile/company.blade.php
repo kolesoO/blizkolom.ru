@@ -1,3 +1,9 @@
+@php
+    use App\Models\Company;
+
+    /** @var Company $company */
+@endphp
+
 @include("site-templates.public.mobile.company.header")
 
 <div class="fast-links">
@@ -26,7 +32,12 @@
         <div class="about">{!! $company->detail_text !!}</div>
         @if ($company->phone)
             <div class="phone">
-                <span>{{ $company->phone }}</span>
+                <a
+                        href="tel:{{ $company->phone }}"
+                        class="js-statistic"
+                        data-company_id="{{ $company->id }}"
+                        data-type="{{ \App\Service\Statistic\Type::CALL }}"
+                >{{ $company->phone }}</a>
                 <div
                         class="btn-callback"
                         data-company_name="{{ $company->name }}"

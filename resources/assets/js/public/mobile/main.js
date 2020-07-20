@@ -81,6 +81,15 @@ $(document).ready(function(){
         $('.btn-form').addClass("enable")
     });
 
+    $('body').on('click', '.js-statistic', function () {
+        $.post(
+            '/api/v1/statistic',
+            {
+                company_id: $(this).attr('data-company_id'),
+                type: $(this).attr('data-type')
+            }
+        )
+    });
 });
 
 //lazy-load images

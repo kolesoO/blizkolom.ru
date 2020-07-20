@@ -310,6 +310,7 @@ h1 {
     color: white;
     padding: .5em 1em;
     margin-top: .75em;
+    text-decoration: none;
 }
 .card {
     border-bottom: 1px solid #d4d2d2;
@@ -393,6 +394,10 @@ h1 {
 }
 .card .phone {
     float: left;
+}
+.card .phone a {
+    color: #3663fd;
+    text-decoration: none;
 }
 .btn-callback {
     background: #d4d2d2;

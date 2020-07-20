@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Http\Middleware\OwnAccess;
@@ -22,6 +23,8 @@ Route::group(
 
         Route::post('/register', 'RegisterController@register');
         Route::post('/login', 'AuthController@login');
+
+        Route::post('/statistic', 'StatisticController@store')->name('statistic.store');
     }
 );
 
@@ -44,6 +47,8 @@ Route::middleware('auth:api')
                 Route::get('/client/{id}', 'ClientController@show');
                 Route::post('/client/{id}', 'ClientController@update');
                 Route::post('/client/{id}/change_password', 'ClientController@changePwd');
+
+                Route::get('/statistic/my', 'StatisticController@showMy');
             }
         );
     });
