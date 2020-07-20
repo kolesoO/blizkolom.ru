@@ -31,7 +31,7 @@ class Client extends Base
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'callback_email', 'login',
+        'name', 'email', 'callback_email', 'login', 'password',
     ];
 
     /**
