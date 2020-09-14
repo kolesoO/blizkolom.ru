@@ -8,7 +8,7 @@
     <div class="block">
         <div class="title">Города</div>
         @foreach ($arResult['items'] as $item)
-            <a href="/{{ $item->code }}">{{ $item->title }}</a>
+            <a href="{{ $item->code }}">{{ $item->title }}</a>
         @endforeach
     </div>
 @endif
