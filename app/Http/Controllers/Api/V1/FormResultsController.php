@@ -41,7 +41,7 @@ class FormResultsController extends Controller
             $this->dispatch(
                 new CallBackEmail($resource)
             );
-            $statisticManager->create($resource->company_id, Type::CALL_BACK);
+            $statisticManager->create((int) $resource->company_id, Type::CALL_BACK);
         }
 
         return [];

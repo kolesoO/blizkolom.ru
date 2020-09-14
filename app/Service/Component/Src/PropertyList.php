@@ -4,6 +4,7 @@ namespace App\Service\Component;
 
 use App\Models\Property;
 use App\Service\Helpers\BuilderHelper;
+use Illuminate\Support\Facades\Log;
 
 class PropertyList extends Base
 {
@@ -44,11 +45,11 @@ class PropertyList extends Base
 
                     $url = [$parent->code];
 
-                    if (isset($this->arResult['root'])) {
+                    if (isset($this->arResult['root']) && !is_null($this->arResult['root']->code)) {
                         array_unshift($url, $this->arResult['root']->code);
                     }
 
-                    $parent->url = implode('/', $url);
+                    $parent->url = '/' . implode('/', $url);
 
                     $parent->seo = app()->component->includeComponent("Seo", "", [
                         "code" => "/{root_code}/" . $parent->code,
@@ -87,11 +88,11 @@ class PropertyList extends Base
                         array_unshift($url, $this->arResult['parent']->code);
                     }
 
-                    if (isset($this->arResult['root'])) {
+                    if (isset($this->arResult['root']) && !is_null($this->arResult['root']->code)) {
                         array_unshift($url, $this->arResult['root']->code);
                     }
 
-                    $item->url = implode('/', $url);
+                    $item->url = '/' . implode('/', $url);
 
                     return $item;
                 })
